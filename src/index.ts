@@ -28,7 +28,7 @@ let dht: DHT;
 addHandler("presentSeed", handlePresentSeed);
 addHandler("refreshGatewayList", handleRefreshGatewayList);
 addHandler("statIpfs", handleStatIpfs);
-addHandler("fetchIpfs", handleFetchIpfs, { se });
+addHandler("fetchIpfs", handleFetchIpfs);
 addHandler("statIpns", handleStatIpns);
 addHandler("fetchIpns", handleFetchIpns);
 
@@ -64,7 +64,7 @@ async function handleFetchIpfs(aq: ActiveQuery) {
 }
 
 async function handleStatIpns(aq: ActiveQuery) {
-  return handleStat(aq, "stat_ipns", "ipfs");
+  return handleStat(aq, "stat_ipns", "ipns");
 }
 
 async function handleFetchIpns(aq: ActiveQuery) {
@@ -196,7 +196,9 @@ async function rpcCall(
     let timer: NodeJS.Timeout;
     let dataCount = 0;
     socket.on("data", (res) => {
-      clearTimeout(timer as number);
+      if (timer && timer.close) {
+        clearTimeout(timer as number);
+      }
       dataCount++;
       const response = unpack(res);
       if (!response || response.error || (response && response?.data?.error)) {
@@ -229,7 +231,7 @@ async function rpcCall(
     timer = setTimeout(() => {
       socket.end();
       reject("timeout");
-    }, 5 * 1000) as NodeJS.Timeout;
+    }, 10 * 1000) as NodeJS.Timeout;
   });
 }
 
