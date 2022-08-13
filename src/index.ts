@@ -37,14 +37,13 @@ let readyPromise = new Promise((resolve) => {
   readyPromiseResolve = resolve;
 });
 
-async function handlePresentSeed(aq: ActiveQuery) {
+async function handlePresentSeed() {
   dht = new DHT(false);
   for (const relay of relays) {
     await dht.addRelay(relay);
   }
   await dht.ready();
   refreshGatewayList();
-  aq.respond();
   readyPromiseResolve();
 }
 
