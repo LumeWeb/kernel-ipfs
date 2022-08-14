@@ -1,4 +1,4 @@
-import { addHandler, handleMessage , log} from "libkmodule";
+import { addHandler, handleMessage, log } from "libkmodule";
 import type { ActiveQuery } from "libkmodule";
 import PQueue from "p-queue";
 import { ipfsPath, ipnsPath } from "is-ipfs";
@@ -137,6 +137,9 @@ async function fetchFromRelays(
   stream = undefined
 ) {
   let error = new Error("NOT_FOUND");
+  if (0 == activeRelays.length) {
+    await refreshGatewayList();
+  }
   for (const relay of activeRelays) {
     let resp;
     try {
@@ -216,7 +219,7 @@ async function rpcCall(
         stream(response?.data.data);
         if (response?.data.done) {
           socket.end();
-            resolve(true);
+          resolve(true);
         }
       }
     });
@@ -229,7 +232,7 @@ async function rpcCall(
         force: true,
       })
     );
-/*    timer = setTimeout(() => {
+    /*    timer = setTimeout(() => {
       socket.end();
       reject("timeout");
     }, 10 * 1000) as NodeJS.Timeout;*/
