@@ -195,17 +195,14 @@ async function rpcCall(
 ) {
   const socket = await dht.connect(relay);
   return new Promise((resolve, reject) => {
-    let timer: NodeJS.Timeout;
     let dataCount = 0;
     socket.on("data", (res) => {
-      if (timer && timer.close) {
-        clearTimeout(timer as number);
-      }
       dataCount++;
       const response = unpack(res);
-      if (!response || response.error || (response && response?.data?.error)) {
+
+      if (!response || response.error) {
         socket.end();
-        reject(response?.error || response?.data?.error);
+        reject(response?.error);
         return;
       }
 
@@ -216,11 +213,12 @@ async function rpcCall(
       }
 
       if (stream) {
-        stream(response?.data.data);
         if (response?.data.done) {
           socket.end();
           resolve(true);
+          return;
         }
+        stream(response?.data.data);
       }
     });
     socket.write("rpc");
@@ -232,10 +230,6 @@ async function rpcCall(
         force: true,
       })
     );
-    /*    timer = setTimeout(() => {
-      socket.end();
-      reject("timeout");
-    }, 10 * 1000) as NodeJS.Timeout;*/
   });
 }
 
