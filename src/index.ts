@@ -227,7 +227,7 @@ async function rpcCall(
         query,
         chain,
         data,
-        force: true,
+        bypassCache: true,
       })
     );
   });
