@@ -14,9 +14,7 @@ interface StatFileResponse {
   files: string[];
 }
 interface PingRPCResponse extends RPCResponse {
-  data?: {
-    ping?: any;
-  };
+  data?: "pong";
 }
 
 interface MethodsRPCResponse extends RPCResponse {
@@ -228,7 +226,7 @@ function checkRelayLatency(relay: string, list: any[]) {
 
     let resp = (await query.result) as PingRPCResponse;
 
-    if (!resp?.data?.ping) {
+    if (resp?.data !== "pong") {
       return;
     }
 
