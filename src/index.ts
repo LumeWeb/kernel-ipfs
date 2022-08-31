@@ -190,7 +190,7 @@ async function relayHasMethods(
   methodList: string[],
   relay: string
 ): Promise<boolean> {
-  let methods: string[];
+  let methods: string[] = [];
   let query = network.simpleQuery(relay, "get_methods", "core");
 
   let resp = (await query.result) as MethodsRPCResponse;
