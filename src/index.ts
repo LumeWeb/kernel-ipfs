@@ -234,7 +234,12 @@ function checkRelayLatency(relay: string, list: any[]) {
 
     if (
       !(await relayHasMethods(
-        ["stat_ipfs", "stat_ipns", "fetch_ipfs", "fetch_ipns"],
+        [
+          "ipfs.stat_ipfs",
+          "ipfs.stat_ipns",
+          "ipfs.fetch_ipfs",
+          "ipfs.fetch_ipns",
+        ],
         relay
       ))
     ) {
