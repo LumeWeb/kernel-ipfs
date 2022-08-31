@@ -150,15 +150,28 @@ async function fetchFromRelays(
   for (const relay of activeRelays) {
     let query;
     if (stream) {
-      query = network.streamingQuery(relay, method, "ipfs", stream, {
-        hash,
-        path,
-      });
+      query = network.streamingQuery(
+        relay,
+        method,
+        "ipfs",
+        stream,
+        {
+          hash,
+          path,
+        },
+        { relayTimeout: 30 }
+      );
     } else {
-      query = network.simpleQuery(relay, method, "ipfs", {
-        hash,
-        path,
-      });
+      query = network.simpleQuery(
+        relay,
+        method,
+        "ipfs",
+        {
+          hash,
+          path,
+        },
+        { relayTimeout: 30 }
+      );
     }
     let resp = await query.result;
     if (resp.error) {
