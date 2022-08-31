@@ -10,17 +10,17 @@
     },
     "dependencies": {
         "@lumeweb/kernel-dht-client": "https://github.com/LumeWeb/kernel-dht-client.git",
+        "@lumeweb/kernel-rpc-client": "https://github.com/LumeWeb/kernel-rpc-client.git",
         "@lumeweb/kernel-utils": "https://github.com/LumeWeb/kernel-utils.git",
         "buffer": "^6.0.3",
-        "fetch-retry": "^5.0.3",
         "is-ipfs": "^6.0.2",
         "libkmodule": "^0.2.12",
         "libskynet": "^0.0.62",
-        "msgpackr": "^1.6.2",
         "p-queue": "^7.3.0",
         "timers-browserify": "^2.0.12"
     },
     "devDependencies": {
+        "@lumeweb/relay-types": "https://github.com/LumeWeb/relay-types.git",
         "@types/events": "^3.0.0",
         "@types/node": "^18.0.3",
         "@types/read": "^0.0.29",
