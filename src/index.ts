@@ -159,7 +159,7 @@ async function fetchFromRelays(
           hash,
           path,
         },
-        { relayTimeout: 30 }
+        { queryTimeout: 30, relayTimeout: 30 }
       );
     } else {
       query = network.simpleQuery(
@@ -170,7 +170,7 @@ async function fetchFromRelays(
           hash,
           path,
         },
-        { relayTimeout: 30 }
+        { queryTimeout: 30, relayTimeout: 30 }
       );
     }
     let resp = await query.result;
