@@ -194,9 +194,7 @@ async function fetchFromRelays(
       throw new Error(resp.error);
     }
 
-    if (!stream) {
-      return resp.data;
-    }
+    return !!stream ? null : resp.data;
   }
 
   throw error;
