@@ -1,278 +1,188 @@
-import { addHandler, handleMessage } from "libkmodule";
-import type { ActiveQuery } from "libkmodule";
-import PQueue from "p-queue";
-import { ipfsPath, ipnsPath } from "is-ipfs";
-import { DataFn } from "libskynet";
-import {
-  RpcNetwork,
-  SimpleRpcQuery,
-  StreamingRpcQuery,
-} from "@lumeweb/kernel-rpc-client";
-import { RPCResponse } from "@lumeweb/relay-types";
-
-interface StatFileResponse {
-  exists: boolean;
-  contentType: string | null;
-  error: any;
-  directory: boolean;
-  files: string[];
-}
-interface PingRPCResponse extends RPCResponse {
-  data?: "pong";
-}
-
-interface MethodsRPCResponse extends RPCResponse {
-  data?: string[];
-}
+import { createLibp2p } from "libp2p";
+import { MemoryDatastore } from "datastore-core";
+import { MemoryBlockstore } from "blockstore-core";
+import { createHelia } from "helia";
+import { yamux } from "@chainsafe/libp2p-yamux";
+// @ts-ignore
+import Hyperswarm from "hyperswarm";
+import { Peer, Proxy } from "@lumeweb/libhyperproxy";
+// @ts-ignore
+import sodium from "sodium-universal";
+// @ts-ignore
+import { CustomEvent } from "@libp2p/interfaces/events";
+// @ts-ignore
+import { fixed32, raw } from "compact-encoding";
+import { mplex } from "@libp2p/mplex";
+import PeerManager from "./peerManager.js";
+import { hypercoreTransport } from "./libp2p/transport.js";
+import { UnixFS, unixfs } from "@helia/unixfs";
+// @ts-ignore
+import { delegatedPeerRouting } from "@libp2p/delegated-peer-routing";
+import { noise } from "@chainsafe/libp2p-noise";
+import { create as createIpfsHttpClient } from "ipfs-http-client";
+import { delegatedContentRouting } from "@libp2p/delegated-content-routing";
+import type { Options } from "ipfs-core";
+import { multiaddr } from "@multiformats/multiaddr";
+import { DELEGATE_LIST, PROTOCOL } from "./constants.js";
+import { ActiveQuery, addHandler, handleMessage } from "libkmodule";
+import { createClient } from "@lumeweb/kernel-swarm-client";
 
 onmessage = handleMessage;
 
-let blockingGatewayUpdate = Promise.resolve();
-
-let activeRelays: string | any[] = [];
-let relays = [
-  "25c2a0a833782d64213c08879b95dd5a60af244b44a058f3a7a70d6722f4bda7",
-];
-
-let network: RpcNetwork;
-
-addHandler("presentSeed", handlePresentSeed);
-addHandler("refreshGatewayList", handleRefreshGatewayList);
-addHandler("statIpfs", handleStatIpfs);
-addHandler("fetchIpfs", handleFetchIpfs, { receiveUpdates: true });
-addHandler("statIpns", handleStatIpns);
-addHandler("fetchIpns", handleFetchIpns, { receiveUpdates: true });
-
-let readyPromiseResolve: any;
-let readyPromise = new Promise((resolve) => {
-  readyPromiseResolve = resolve;
+let moduleLoadedResolve: Function;
+let moduleLoaded: Promise<void> = new Promise((resolve) => {
+  moduleLoadedResolve = resolve;
 });
 
-async function handlePresentSeed() {
-  network = new RpcNetwork(false);
-  for (const relay of relays) {
-    await network.addRelay(relay);
-  }
+let swarm;
+let proxy: Proxy;
+let fs: UnixFS;
 
-  refreshGatewayList();
-  readyPromiseResolve();
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
+addHandler("presentSeed", handlePresentSeed);
+addHandler("stat", handleStat);
+addHandler("ls", handleLs, { receiveUpdates: true });
+addHandler("cat", handleCat, { receiveUpdates: true });
+
+async function handlePresentSeed() {
+  swarm = createClient();
+
+  const client = createIpfsHttpClient(getDelegateConfig());
+
+  PeerManager.instance.ipfs = await createHelia({
+    blockstore: new MemoryBlockstore(),
+    datastore: new MemoryDatastore(),
+    libp2p: await createLibp2p({
+      transports: [hypercoreTransport({ peerManager: PeerManager.instance })],
+      connectionEncryption: [noise()],
+      streamMuxers: [yamux(), mplex()],
+      start: false,
+      contentRouters: [delegatedContentRouting(client)],
+      peerRouters: [delegatedPeerRouting(client)],
+      relay: {
+        enabled: false,
+      },
+    }),
+  });
+
+  proxy = new Proxy({
+    swarm,
+    listen: true,
+    protocol: PROTOCOL,
+    autostart: true,
+    emulateWebsocket: true,
+    createDefaultMessage: false,
+    onchannel(peer: Peer, channel: any) {
+      PeerManager.instance.handleNewPeerChannel(peer, channel);
+    },
+    onopen() {
+      PeerManager.instance.handleNewPeer();
+    },
+    onclose(peer: Peer) {
+      PeerManager.instance.handleClosePeer(peer);
+    },
+  });
+
+  swarm.join(PROTOCOL);
+  await swarm.start();
+  // @ts-ignore
+  fs = unixfs(PeerManager.instance.ipfs);
+  moduleLoadedResolve();
 }
 
-async function handleRefreshGatewayList(aq: ActiveQuery) {
-  await readyPromise;
-  await blockingGatewayUpdate;
-  await refreshGatewayList();
+async function handleStat(aq: ActiveQuery) {
+  await moduleLoaded;
+
+  if (!("cid" in aq.callerInput)) {
+    aq.reject("cid required");
+    return;
+  }
+
+  let aborted = false;
+
+  aq.setReceiveUpdate?.(() => {
+    aborted = true;
+  });
+
+  try {
+    aq.respond(
+      JSON.parse(
+        JSON.stringify(
+          await fs.stat(aq.callerInput.cid, aq.callerInput.options ?? {})
+        )
+      )
+    );
+  } catch (e) {
+    aq.reject((e as Error).message);
+  }
+}
+
+async function handleLs(aq: ActiveQuery) {
+  await moduleLoaded;
+  if (!("cid" in aq.callerInput)) {
+    aq.reject("cid required");
+    return;
+  }
+
+  let aborted = false;
+
+  aq.setReceiveUpdate?.(() => {
+    aborted = true;
+  });
+
+  const iterable = fs.ls(aq.callerInput.cid, aq.callerInput.options ?? {});
+
+  for await (const item of iterable) {
+    if (aborted) {
+      break;
+    }
+    aq.sendUpdate(JSON.parse(JSON.stringify(item)));
+  }
+
   aq.respond();
 }
 
-async function handleStatIpfs(aq: ActiveQuery) {
-  return handleStat(aq, "stat_ipfs", "ipfs");
-}
+async function handleCat(aq: ActiveQuery) {
+  await moduleLoaded;
 
-async function handleFetchIpfs(aq: ActiveQuery) {
-  return handleFetch(aq, "fetch_ipfs", "ipfs");
-}
-
-async function handleStatIpns(aq: ActiveQuery) {
-  return handleStat(aq, "stat_ipns", "ipns");
-}
-
-async function handleFetchIpns(aq: ActiveQuery) {
-  return handleFetch(aq, "fetch_ipns", "ipns");
-}
-
-async function validateInputs(aq: ActiveQuery, type: "ipns" | "ipfs") {
-  const { hash = null } = aq.callerInput;
-  const { path = "" } = aq.callerInput;
-  if (!hash) {
-    aq.reject("hash missing");
+  if (!("cid" in aq.callerInput)) {
+    aq.reject("cid required");
     return;
   }
 
-  if (type === "ipfs" && !ipfsPath(`/ipfs/${hash}`)) {
-    aq.reject("ipfs hash is invalid");
-    return;
-  }
+  let aborted = false;
 
-  if (type === "ipns" && !ipnsPath(`/ipns/${hash}`)) {
-    aq.reject("ipns hash is invalid");
-    return;
-  }
-  await readyPromise;
-  await blockingGatewayUpdate;
-
-  return { hash, path };
-}
-
-async function handleStat(
-  aq: ActiveQuery,
-  method: string,
-  type: "ipns" | "ipfs"
-): Promise<void> {
-  const valid = await validateInputs(aq, type);
-  if (!valid) {
-    return;
-  }
-  const { hash, path } = valid;
-  try {
-    let resp = (await fetchFromRelays(hash, path, method)) as StatFileResponse;
-    aq.respond(resp);
-  } catch (e: any) {
-    aq.reject(e);
-  }
-}
-
-async function handleFetch(
-  aq: ActiveQuery,
-  method: string,
-  type: "ipns" | "ipfs"
-): Promise<void> {
-  const valid = await validateInputs(aq, type);
-  if (!valid) {
-    return;
-  }
-  const { hash, path } = valid;
-
-  try {
-    await fetchFromRelays(
-      hash,
-      path,
-      method,
-      aq.sendUpdate,
-      aq.setReceiveUpdate
-    );
-    aq.respond();
-  } catch (e: any) {
-    aq.reject(e);
-  }
-}
-
-async function fetchFromRelays(
-  hash: string,
-  path: string,
-  method: string,
-  stream: DataFn | undefined = undefined,
-  receiveUpdate: ((receiveUpdate: DataFn) => void) | undefined = undefined
-) {
-  let error = new Error("NOT_FOUND");
-  if (0 == activeRelays.length) {
-    await refreshGatewayList();
-  }
-  for (const relay of activeRelays) {
-    let query: any;
-    if (stream) {
-      query = network.streamingQuery(
-        relay,
-        method,
-        "ipfs",
-        stream,
-        {
-          hash,
-          path,
-        },
-        { queryTimeout: 30, relayTimeout: 30 }
-      );
-      receiveUpdate?.((message) => {
-        if (message && message.cancel) {
-          query.cancel();
-        }
-      });
-    } else {
-      query = network.simpleQuery(
-        relay,
-        method,
-        "ipfs",
-        {
-          hash,
-          path,
-        },
-        { queryTimeout: 30, relayTimeout: 30 }
-      );
-    }
-    let resp = await query.result;
-    if (resp.error) {
-      throw new Error(resp.error);
-    }
-
-    return !!stream ? null : resp.data;
-  }
-
-  throw error;
-}
-
-async function relayHasMethods(
-  methodList: string[],
-  relay: string
-): Promise<boolean> {
-  let methods: string[] = [];
-  let query = network.simpleQuery(relay, "get_methods", "core");
-
-  let resp = (await query.result) as MethodsRPCResponse;
-
-  if (resp.data) {
-    methods = resp.data;
-  }
-
-  let has = true;
-
-  methodList.forEach((item) => {
-    if (!methods.includes(item)) {
-      has = false;
-    }
+  aq.setReceiveUpdate?.(() => {
+    aborted = true;
   });
 
-  return has;
-}
-async function refreshGatewayList() {
-  let processResolve: any;
-  blockingGatewayUpdate = new Promise((resolve) => {
-    processResolve = resolve;
-  });
-  const queue = new PQueue({ concurrency: 10 });
+  const iterable = fs.cat(aq.callerInput.cid, aq.callerInput.options ?? {});
 
-  let latencies: any[] = [];
-
-  relays.forEach((item) => {
-    queue.add(checkRelayLatency(item, latencies));
-  });
-
-  await queue.onIdle();
-
-  activeRelays = latencies
-    .sort((a: any[], b: any[]) => {
-      return a[0] - b[0];
-    })
-    .map((item: any[]) => item[1]);
-  processResolve();
-}
-function checkRelayLatency(relay: string, list: any[]) {
-  return async () => {
-    const start = Date.now();
-
-    let query = network.simpleQuery(relay, "ping", "core");
-
-    let resp = (await query.result) as PingRPCResponse;
-
-    if (resp?.data !== "pong") {
-      return;
+  for await (const chunk of iterable) {
+    if (aborted) {
+      break;
     }
 
-    const end = Date.now() - start;
+    aq.sendUpdate(chunk);
+  }
 
-    if (
-      !(await relayHasMethods(
-        [
-          "ipfs.stat_ipfs",
-          "ipfs.stat_ipns",
-          "ipfs.fetch_ipfs",
-          "ipfs.fetch_ipns",
-        ],
-        relay
-      ))
-    ) {
-      return;
-    }
+  aq.respond();
+}
 
-    list.push([end, relay]);
+function getDelegateConfig(): Options {
+  const delegateString =
+    DELEGATE_LIST[Math.floor(Math.random() * DELEGATE_LIST.length)];
+  const delegateAddr = multiaddr(delegateString).toOptions();
+
+  return {
+    // @ts-ignore
+    host: delegateAddr.host,
+    // @ts-ignore
+    protocol: parseInt(delegateAddr.port) === 443 ? "https" : "http",
+    port: delegateAddr.port,
   };
 }

@@ -9,5 +9,6 @@ esbuild.buildSync({
   //  minify: true
   define: {
     global: "self",
-  }
+  },
+    inject:['timers.js']
 });
