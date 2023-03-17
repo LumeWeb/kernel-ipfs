@@ -207,32 +207,6 @@ export default class PeerManager {
     return socket;
   }
 
-  /*  private _registerKeyExchangeMessage(peer: Peer, channel: any) {
-        const self = this;
-        const message = channel.addMessage({
-          encoding: {
-            preencode(state: any, m: any) {
-              fixed32.preencode(state, m);
-            },
-            encode(state: any, m: any) {
-              fixed32.encode(state, m);
-            },
-            decode(state: any, m: any): PeerInfoResult {
-              return {
-                publicKey: fixed32.decode(state, m),
-                libp2pPublicKey: raw.decode(state, m),
-              };
-            },
-          },
-          async onmessage(m: PeerInfoResult) {
-            self.get(m.publicKey)?.submitKeyExchange(m.libp2pPublicKey);
-          },
-        });
-        this.update(peer.socket.remotePublicKey, {
-          messages: { keyExchange: message },
-        });
-      }*/
-
   private _registerOpenSocketMessage(peer: Peer, channel: any) {
     const self = this;
     const message = channel.addMessage({
