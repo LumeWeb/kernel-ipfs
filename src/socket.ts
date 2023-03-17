@@ -7,7 +7,6 @@ import { clearTimeout } from "timers";
 const asyncIterator = Symbol.asyncIterator || Symbol("asyncIterator");
 
 const STREAM_DESTROYED = new Error("Stream was destroyed");
-const PREMATURE_CLOSE = new Error("Premature close");
 const READ_DONE = 0b0010000000000 << 4;
 const DESTROYED = 0b1000;
 
