@@ -138,6 +138,8 @@ async function handlePresentSeed() {
     },
   });
 
+  PeerManager.instance.ipfsReady;
+
   swarm.join(PROTOCOL);
   await swarm.start();
   await swarm.ready();
