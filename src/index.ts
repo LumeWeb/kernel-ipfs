@@ -1,6 +1,4 @@
 import { createLibp2p } from "libp2p";
-import { MemoryDatastore } from "datastore-core";
-import { MemoryBlockstore } from "blockstore-core";
 import { createHelia } from "helia";
 import { yamux } from "@chainsafe/libp2p-yamux";
 // @ts-ignore
@@ -38,6 +36,8 @@ import { substr } from "runes2";
 import { MultibaseDecoder } from "multiformats";
 import { peerIdFromCID } from "@libp2p/peer-id";
 import { bootstrap } from "@libp2p/bootstrap";
+import { IDBBlockstore } from "blockstore-idb";
+import { IDBDatastore } from "datastore-idb";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases
@@ -113,10 +113,17 @@ async function handlePresentSeed() {
     pubsub: gossipsub(),
   });
 
-  // @ts-ignore
+  const blockstore = new IDBBlockstore("ipfs_blocks");
+  const datastore = new IDBDatastore("ipfs_data");
+
+  await blockstore.open();
+  await datastore.open();
+
   PeerManager.instance.ipfs = await createHelia({
-    blockstore: new MemoryBlockstore(),
-    datastore: new MemoryDatastore(),
+    // @ts-ignore
+    blockstore,
+    // @ts-ignore
+    datastore,
     libp2p,
   });
 
