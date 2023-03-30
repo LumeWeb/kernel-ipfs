@@ -257,7 +257,9 @@ async function handleIpnsResolve(aq: ActiveQuery) {
 
   try {
     return aq.respond(
-      (await IPNS.resolve(peerIdFromCID(cid), aq.callerInput?.options)).asCID
+      (
+        await IPNS.resolve(peerIdFromCID(cid), aq.callerInput?.options)
+      ).asCID.toString()
     );
   } catch (e: any) {
     aq.reject((e as Error).message);
