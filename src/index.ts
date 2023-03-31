@@ -304,6 +304,12 @@ async function handleIpnsResolve(aq: ActiveQuery) {
 
   await activePeersDefer.promise;
 
+  if (PeerManager.instance.ipfs.libp2p.getPeers().length === 0) {
+    activePeersDefer = defer();
+  }
+
+  await activePeersDefer.promise;
+
   if (!aq.callerInput || !("cid" in aq.callerInput)) {
     aq.reject("cid required");
     return;
