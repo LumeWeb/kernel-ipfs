@@ -68,6 +68,7 @@ addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
 addHandler("cat", handleCat, { receiveUpdates: true });
 addHandler("ipnsResolve", handleIpnsResolve);
+addHandler("getActivePeers", handleGetActivePeers);
 
 async function handlePresentSeed() {
   swarm = createClient();
@@ -327,6 +328,12 @@ async function handleIpnsResolve(aq: ActiveQuery) {
   } catch (e: any) {
     aq.reject((e as Error).message);
   }
+}
+
+async function handleGetActivePeers(aq: ActiveQuery) {
+  await ready();
+
+  aq.respond(PeerManager.instance.ipfs.libp2p.getPeers());
 }
 
 async function ready() {
