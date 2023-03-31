@@ -39,6 +39,7 @@
         "libkmodule": "^0.2.53",
         "libp2p": "^0.42.2",
         "multiformats": "^11.0.2",
+        "p-defer": "^4.0.0",
         "p-queue": "^7.3.4",
         "private-ip": "^3.0.0",
         "rewire": "^6.0.0",

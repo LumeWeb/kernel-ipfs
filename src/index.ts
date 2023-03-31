@@ -38,6 +38,7 @@ import { peerIdFromCID } from "@libp2p/peer-id";
 import { bootstrap } from "@libp2p/bootstrap";
 import { IDBBlockstore } from "blockstore-idb";
 import { IDBDatastore } from "datastore-idb";
+import defer from "p-defer";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases
@@ -49,10 +50,7 @@ const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
 
 onmessage = handleMessage;
 
-let moduleLoadedResolve: Function;
-let moduleLoaded: Promise<void> = new Promise((resolve) => {
-  moduleLoadedResolve = resolve;
-});
+const moduleDefer = defer();
 
 let swarm;
 let proxy: Proxy;
@@ -205,7 +203,7 @@ async function handlePresentSeed() {
     dht(PeerManager.instance.ipfs),
     pubsub(PeerManager.instance.ipfs as any),
   ]);
-  moduleLoadedResolve();
+  moduleDefer.resolve();
 }
 
 async function handleStat(aq: ActiveQuery) {
@@ -316,7 +314,7 @@ async function handleIpnsResolve(aq: ActiveQuery) {
 }
 
 async function ready() {
-  await moduleLoaded;
+  await moduleDefer.promise;
   await PeerManager.instance.ipfsReady;
 }
 

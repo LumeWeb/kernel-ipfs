@@ -5,6 +5,7 @@ import { fixed32, json, raw, uint } from "compact-encoding";
 import { TcpSocketConnectOpts } from "net";
 import { Helia } from "@helia/interface";
 import { deserializeError } from "serialize-error";
+import defer from "p-defer";
 import {
   CloseSocketRequest,
   ErrorSocketRequest,
@@ -127,14 +128,14 @@ export default class PeerManager {
     this._ipfs = value as Helia;
   }
 
-  private _ipfsReady?: Promise<void>;
+  private _ipfsReady?: Promise<unknown>;
   private _ipfsResolve?: () => void;
 
   get ipfsReady(): Promise<void> {
     if (!this._ipfsReady) {
-      this._ipfsReady = new Promise((resolve) => {
-        this._ipfsResolve = resolve;
-      });
+      let ipfsDefer = defer();
+      this._ipfsReady = ipfsDefer.promise;
+      this._ipfsResolve = ipfsDefer.resolve;
     }
 
     return this._ipfsReady as Promise<any>;
