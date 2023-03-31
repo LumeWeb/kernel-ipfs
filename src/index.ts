@@ -51,6 +51,7 @@ const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
 onmessage = handleMessage;
 
 const moduleDefer = defer();
+let activePeersDefer = defer();
 
 let swarm;
 let proxy: Proxy;
@@ -166,13 +167,15 @@ async function handlePresentSeed() {
   await blockstore.open();
   await datastore.open();
 
-  PeerManager.instance.ipfs = await createHelia({
+  const ipfs = await createHelia({
     // @ts-ignore
     blockstore,
     // @ts-ignore
     datastore,
     libp2p,
   });
+
+  PeerManager.instance.ipfs = ipfs;
 
   proxy = new Proxy({
     swarm,
@@ -198,11 +201,21 @@ async function handlePresentSeed() {
   await swarm.start();
   await swarm.ready();
   // @ts-ignore
-  fs = unixfs(PeerManager.instance.ipfs);
-  IPNS = ipns(PeerManager.instance.ipfs as any, [
-    dht(PeerManager.instance.ipfs),
-    pubsub(PeerManager.instance.ipfs as any),
-  ]);
+  fs = unixfs(ipfs);
+  IPNS = ipns(ipfs as any, [dht(ipfs), pubsub(ipfs as any)]);
+
+  ipfs.libp2p.addEventListener("peer:connect", () => {
+    if (ipfs.libp2p.getPeers().length > 0) {
+      activePeersDefer.resolve();
+    }
+  });
+
+  ipfs.libp2p.addEventListener("peer:disconnect", () => {
+    if (ipfs.libp2p.getPeers().length === 0) {
+      activePeersDefer = defer();
+    }
+  });
+
   moduleDefer.resolve();
 }
 
@@ -287,6 +300,9 @@ async function handleCat(aq: ActiveQuery) {
 
 async function handleIpnsResolve(aq: ActiveQuery) {
   await ready();
+
+  await activePeersDefer.promise;
+
   if (!aq.callerInput || !("cid" in aq.callerInput)) {
     aq.reject("cid required");
     return;
