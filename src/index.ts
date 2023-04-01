@@ -339,6 +339,10 @@ async function handleIpnsResolve(aq: ActiveQuery) {
 }
 
 function getCID(cid: string): CID {
+  try {
+    return CID.parse(cid);
+  } catch {}
+
   const prefix = substr(cid, 0, 1);
 
   if (!(prefix in basesByPrefix)) {
