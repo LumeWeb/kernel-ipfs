@@ -238,7 +238,10 @@ async function handleStat(aq: ActiveQuery) {
     aq.respond(
       JSON.parse(
         JSON.stringify(
-          await fs.stat(aq.callerInput.cid, aq.callerInput.options ?? {})
+          await fs.stat(
+            getCID(aq.callerInput.cid),
+            aq.callerInput.options ?? {}
+          )
         )
       )
     );
@@ -260,7 +263,10 @@ async function handleLs(aq: ActiveQuery) {
     aborted = true;
   });
 
-  const iterable = fs.ls(aq.callerInput.cid, aq.callerInput.options ?? {});
+  const iterable = fs.ls(
+    getCID(aq.callerInput.cid),
+    aq.callerInput.options ?? {}
+  );
 
   for await (const item of iterable) {
     if (aborted) {
@@ -286,7 +292,10 @@ async function handleCat(aq: ActiveQuery) {
     aborted = true;
   });
 
-  const iterable = fs.cat(aq.callerInput.cid, aq.callerInput.options ?? {});
+  const iterable = fs.cat(
+    getCID(aq.callerInput.cid),
+    aq.callerInput.options ?? {}
+  );
 
   for await (const chunk of iterable) {
     if (aborted) {
@@ -315,25 +324,29 @@ async function handleIpnsResolve(aq: ActiveQuery) {
     return;
   }
 
-  const prefix = substr(aq.callerInput.cid, 0, 1);
-
-  if (!(prefix in basesByPrefix)) {
-    aq.reject("invalid multibase found in CID");
-    return;
-  }
-
-  const base = basesByPrefix[prefix];
-  const cid = CID.parse(aq.callerInput.cid, base);
-
   try {
     return aq.respond(
       (
-        await IPNS.resolve(peerIdFromCID(cid), aq.callerInput?.options)
+        await IPNS.resolve(
+          peerIdFromCID(getCID(aq.callerInput.cid)),
+          aq.callerInput?.options
+        )
       ).asCID.toString()
     );
   } catch (e: any) {
     aq.reject((e as Error).message);
   }
+}
+
+function getCID(cid: string): CID {
+  const prefix = substr(cid, 0, 1);
+
+  if (!(prefix in basesByPrefix)) {
+    throw new Error("invalid multibase found in CID");
+  }
+
+  const base = basesByPrefix[prefix];
+  return CID.parse(cid, base);
 }
 
 async function handleGetActivePeers(aq: ActiveQuery) {
