@@ -64,6 +64,7 @@ BigInt.prototype.toJSON = function () {
 };
 
 addHandler("presentSeed", handlePresentSeed);
+addHandler("ready", handleReady);
 addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
 addHandler("cat", handleCat, { receiveUpdates: true });
@@ -218,6 +219,12 @@ async function handlePresentSeed() {
   });
 
   moduleDefer.resolve();
+}
+
+async function handleReady(aq: ActiveQuery) {
+  await ready();
+
+  aq.respond();
 }
 
 async function handleStat(aq: ActiveQuery) {
