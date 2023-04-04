@@ -10,5 +10,5 @@ esbuild.buildSync({
   define: {
     global: "self",
   },
-    inject:['timers.js']
+  inject: ["timers.js", "polyfill.js"],
 });

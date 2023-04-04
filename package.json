@@ -27,6 +27,7 @@
         "@libp2p/utils": "^3.0.6",
         "@lumeweb/kernel-swarm-client": "git+https://git.lumeweb.com/LumeWeb/kernel-swarm-client.git",
         "@multiformats/mafmt": "^11.1.2",
+        "@peculiar/webcrypto": "git+https://git.lumeweb.com/LumeWeb/webcrypto.git",
         "b4a": "^1.6.3",
         "blockstore-idb": "^1.1.0",
         "buffer": "^6.0.3",
