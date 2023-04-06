@@ -59,8 +59,6 @@
         "@libp2p/peer-id": "^2.0.3",
         "@libp2p/peer-id-factory": "^2.0.3",
         "@libp2p/websockets": "^5.0.8",
-        "@lumeweb/kernel-dht-client": "git+https://git.lumeweb.com/LumeWeb/kernel-swarm-client.git",
-        "@lumeweb/kernel-rpc-client": "git+https://git.lumeweb.com/LumeWeb/kernel-rpc-client.git",
         "@lumeweb/libhyperproxy": "git+https://git.lumeweb.com/LumeWeb/libhyperproxy.git",
         "@multiformats/multiaddr": "^11.6.1",
         "@scure/bip39": "^1.2.0",
