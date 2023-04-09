@@ -265,11 +265,19 @@ async function handleLs(aq: ActiveQuery) {
   }
 
   let aborted = false;
+  let nextChunk = defer();
 
-  aq.setReceiveUpdate?.(() => {
-    aborted = true;
+  aq.setReceiveUpdate?.((data: any) => {
+    switch (data) {
+      case "abort":
+        aborted = true;
+        break;
+      case "next":
+        nextChunk.resolve();
+        nextChunk = defer();
+        break;
+    }
   });
-
   const iterable = fs.ls(
     getCID(aq.callerInput.cid),
     aq.callerInput.options ?? {}
@@ -280,6 +288,8 @@ async function handleLs(aq: ActiveQuery) {
       break;
     }
     aq.sendUpdate(JSON.parse(JSON.stringify(item)));
+
+    await nextChunk.promise;
   }
 
   aq.respond();
@@ -294,9 +304,18 @@ async function handleCat(aq: ActiveQuery) {
   }
 
   let aborted = false;
+  let nextChunk = defer();
 
-  aq.setReceiveUpdate?.(() => {
-    aborted = true;
+  aq.setReceiveUpdate?.((data: any) => {
+    switch (data) {
+      case "abort":
+        aborted = true;
+        break;
+      case "next":
+        nextChunk.resolve();
+        nextChunk = defer();
+        break;
+    }
   });
 
   const iterable = fs.cat(
@@ -310,6 +329,8 @@ async function handleCat(aq: ActiveQuery) {
     }
 
     aq.sendUpdate(chunk);
+
+    await nextChunk.promise;
   }
 
   aq.respond();
