@@ -3,6 +3,7 @@ import { TcpSocketConnectOpts } from "net";
 import { PeerEntity, SocketRequest, WriteSocketRequest } from "./types.js";
 import PeerManager from "./peerManager.js";
 import { clearTimeout } from "timers";
+import { maybeGetAsyncProperty } from "@lumeweb/libkernel-universal";
 
 const asyncIterator = Symbol.asyncIterator || Symbol("asyncIterator");
 
@@ -50,8 +51,8 @@ export class Socket extends Duplex {
     return this._peer;
   }
 
-  public _write(data: any, cb: any): void {
-    this._peer.messages.writeSocket?.send({
+  public async _write(data: any, cb: any): Promise<void> {
+    (await maybeGetAsyncProperty(this._peer.messages.writeSocket))?.send({
       id: this._id,
       remoteId: this._remoteId,
       data,
@@ -59,8 +60,8 @@ export class Socket extends Duplex {
     cb();
   }
 
-  public _destroy(cb: Callback) {
-    this._peer.messages.closeSocket?.send({
+  public async _destroy(cb: Callback) {
+    (await maybeGetAsyncProperty(this._peer.messages.closeSocket))?.send({
       id: this._id,
       remoteId: this._remoteId,
     } as SocketRequest);
@@ -68,8 +69,8 @@ export class Socket extends Duplex {
     this._manager.sockets.delete(this._id);
   }
 
-  public connect() {
-    this._peer.messages.openSocket?.send({
+  public async connect() {
+    (await maybeGetAsyncProperty(this._peer.messages.openSocket))?.send({
       ...this._options,
       id: this._id,
     });

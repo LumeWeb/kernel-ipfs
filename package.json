@@ -27,6 +27,7 @@
         "@libp2p/utils": "^3.0.7",
         "@lumeweb/kernel-protomux-client": "git+https://git.lumeweb.com/LumeWeb/kernel-protomux-client.git",
         "@lumeweb/kernel-swarm-client": "git+https://git.lumeweb.com/LumeWeb/kernel-swarm-client.git",
+        "@lumeweb/libkernel-universal": "git+https://git.lumeweb.com/LumeWeb/libkernel-universal.git",
         "@multiformats/mafmt": "^11.1.2",
         "@peculiar/webcrypto": "git+https://git.lumeweb.com/LumeWeb/webcrypto.git",
         "b4a": "^1.6.3",
