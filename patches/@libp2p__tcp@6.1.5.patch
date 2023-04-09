@@ -1,0 +1,32 @@
+diff --git a/dist/src/index.js b/dist/src/index.js
+index dab2ad35e64981f00c59a48ccbcbe407eb7749e6..7179d4ad8137be05e5f080ca67ea433c9dfaeeb0 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -8,7 +8,7 @@ import { AbortError, CodeError } from '@libp2p/interfaces/errors';
+ import { CODE_CIRCUIT, CODE_P2P, CODE_UNIX } from './constants.js';
+ import { symbol } from '@libp2p/interface-transport';
+ const log = logger('libp2p:tcp');
+-class TCP {
++export class TCP {
+     constructor(components, options = {}) {
+         this.opts = options;
+         this.components = components;
+diff --git a/package.json b/package.json
+index 2e38ab0bdeef25a898770aedd0459e8c0cd79a9b..9ec4c16e10347e5f9717998725387b30d5b59907 100644
+--- a/package.json
++++ b/package.json
+@@ -36,6 +36,14 @@
+     ".": {
+       "types": "./dist/src/index.d.ts",
+       "import": "./dist/src/index.js"
++    },
++    "./socket-to-conn": {
++      "types": "./dist/src/socket-to-conn.d.ts",
++      "import": "./dist/src/socket-to-conn.js"
++    },
++    "./utils": {
++      "types": "./dist/src/utils.d.ts",
++      "import": "./dist/src/utils.js"
+     }
+   },
+   "eslintConfig": {
