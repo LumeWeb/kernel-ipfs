@@ -108,7 +108,7 @@
             "protomux": "@lumeweb/kernel-protomux-client"
         },
         "patchedDependencies": {
-            "@libp2p/tcp@5.0.2": "patches/@libp2p__tcp@5.0.2.patch"
+            "@libp2p/tcp@6.1.5": "patches/@libp2p__tcp@6.1.5.patch"
         }
     }
 }
