@@ -105,7 +105,7 @@
     },
     "pnpm": {
         "overrides": {
-            "protomux": "@lumeweb/kernel-protomux-client"
+            "protomux": "git+https://git.lumeweb.com/LumeWeb/kernel-protomux-client.git"
         },
         "patchedDependencies": {
             "@libp2p/tcp@6.1.5": "patches/@libp2p__tcp@6.1.5.patch"
