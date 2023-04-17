@@ -109,7 +109,7 @@
             "protomux": "git+https://git.lumeweb.com/LumeWeb/kernel-protomux-client.git"
         },
         "patchedDependencies": {
-            "@libp2p/tcp@6.1.5": "patches/@libp2p__tcp@6.1.5.patch",
+            "@libp2p/tcp@6.2.1": "patches/@libp2p__tcp@6.2.1.patch",
             "b4a@1.6.3": "patches/b4a@1.6.3.patch"
         }
     }
