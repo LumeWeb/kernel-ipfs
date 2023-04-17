@@ -3,7 +3,7 @@ import { createHelia } from "helia";
 import { yamux } from "@chainsafe/libp2p-yamux";
 // @ts-ignore
 import Hyperswarm from "hyperswarm";
-import { Peer, Proxy } from "@lumeweb/libhyperproxy";
+import { Peer, MultiSocketProxy } from "@lumeweb/libhyperproxy";
 // @ts-ignore
 import sodium from "sodium-universal";
 // @ts-ignore
@@ -11,7 +11,6 @@ import { CustomEvent } from "@libp2p/interfaces/events";
 // @ts-ignore
 import { fixed32, raw } from "compact-encoding";
 import { mplex } from "@libp2p/mplex";
-import PeerManager from "./peerManager.js";
 import { hypercoreTransport } from "./libp2p/transport.js";
 import { UnixFS, unixfs } from "@helia/unixfs";
 // @ts-ignore
@@ -39,6 +38,7 @@ import { bootstrap } from "@libp2p/bootstrap";
 import { IDBBlockstore } from "blockstore-idb";
 import { IDBDatastore } from "datastore-idb";
 import defer from "p-defer";
+import { Helia } from "@helia/interface";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases
@@ -51,12 +51,14 @@ const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
 onmessage = handleMessage;
 
 const moduleDefer = defer();
-let activePeersDefer = defer();
+let activeIpfsPeersDefer = defer();
+let networkPeersAvailable = defer();
 
 let swarm;
-let proxy: Proxy;
+let proxy: MultiSocketProxy;
 let fs: UnixFS;
 let IPNS: IPNS;
+let ipfs: Helia;
 
 // @ts-ignore
 BigInt.prototype.toJSON = function () {
@@ -75,6 +77,15 @@ async function handlePresentSeed() {
   swarm = createClient();
 
   const client = createIpfsHttpClient(getDelegateConfig());
+
+  proxy = new MultiSocketProxy({
+    swarm,
+    listen: true,
+    protocol: PROTOCOL,
+    autostart: true,
+    emulateWebsocket: true,
+    server: false,
+  });
 
   const libp2p = await createLibp2p({
     peerDiscovery: [
@@ -137,10 +148,12 @@ async function handlePresentSeed() {
         ],
       }),
     ],
-    transports: [hypercoreTransport({ peerManager: PeerManager.instance })],
+    transports: [hypercoreTransport({ proxy })],
     connectionEncryption: [noise()],
     connectionManager: {
       autoDial: true,
+      minConnections: 5,
+      maxConnections: 20,
     },
     streamMuxers: [yamux(), mplex()],
     start: false,
@@ -169,7 +182,7 @@ async function handlePresentSeed() {
   await blockstore.open();
   await datastore.open();
 
-  const ipfs = await createHelia({
+  ipfs = await createHelia({
     // @ts-ignore
     blockstore,
     // @ts-ignore
@@ -177,27 +190,12 @@ async function handlePresentSeed() {
     libp2p,
   });
 
-  PeerManager.instance.ipfs = ipfs;
-
-  proxy = new Proxy({
-    swarm,
-    listen: true,
-    protocol: PROTOCOL,
-    autostart: true,
-    emulateWebsocket: true,
-    createDefaultMessage: false,
-    onchannel(peer: Peer, channel: any) {
-      PeerManager.instance.handleNewPeerChannel(peer, channel);
-    },
-    onopen() {
-      PeerManager.instance.handleNewPeer();
-    },
-    onclose(peer: Peer) {
-      PeerManager.instance.handleClosePeer(peer);
-    },
+  proxy.on("peerChannelOpen", async () => {
+    if (!ipfs.libp2p.isStarted()) {
+      await ipfs.libp2p.start();
+      networkPeersAvailable.resolve();
+    }
   });
-
-  PeerManager.instance.ipfsReady;
 
   swarm.join(PROTOCOL);
   await swarm.start();
@@ -208,13 +206,13 @@ async function handlePresentSeed() {
 
   ipfs.libp2p.addEventListener("peer:connect", () => {
     if (ipfs.libp2p.getPeers().length > 0) {
-      activePeersDefer.resolve();
+      activeIpfsPeersDefer.resolve();
     }
   });
 
   ipfs.libp2p.addEventListener("peer:disconnect", () => {
     if (ipfs.libp2p.getPeers().length === 0) {
-      activePeersDefer = defer();
+      activeIpfsPeersDefer = defer();
     }
   });
 
@@ -339,13 +337,13 @@ async function handleCat(aq: ActiveQuery) {
 async function handleIpnsResolve(aq: ActiveQuery) {
   await ready();
 
-  await activePeersDefer.promise;
+  await activeIpfsPeersDefer.promise;
 
-  if (PeerManager.instance.ipfs.libp2p.getPeers().length === 0) {
-    activePeersDefer = defer();
+  if (ipfs.libp2p.getPeers().length === 0) {
+    activeIpfsPeersDefer = defer();
   }
 
-  await activePeersDefer.promise;
+  await activeIpfsPeersDefer.promise;
 
   if (!aq.callerInput || !("cid" in aq.callerInput)) {
     aq.reject("cid required");
@@ -384,12 +382,12 @@ function getCID(cid: string): CID {
 async function handleGetActivePeers(aq: ActiveQuery) {
   await ready();
 
-  aq.respond(PeerManager.instance.ipfs.libp2p.getPeers());
+  aq.respond(ipfs.libp2p.getPeers());
 }
 
 async function ready() {
   await moduleDefer.promise;
-  await PeerManager.instance.ipfsReady;
+  await networkPeersAvailable.promise;
 }
 
 function getDelegateConfig(): Options {

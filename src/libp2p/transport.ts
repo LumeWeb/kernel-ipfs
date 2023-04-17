@@ -1,14 +1,12 @@
 import { symbol } from "@libp2p/interface-transport";
 // @ts-ignore
 import { TCP, TCPComponents, TCPDialOptions, TCPOptions } from "@libp2p/tcp";
-import PeerManager from "../peerManager.js";
 import { Multiaddr } from "@multiformats/multiaddr";
 import { IpcSocketConnectOpts, TcpSocketConnectOpts } from "net";
 import { logger } from "@libp2p/logger";
 import { AbortError, CodeError } from "@libp2p/interfaces/errors";
 // @ts-ignore
 import { multiaddrToNetConfig } from "@libp2p/tcp/utils";
-import { Socket } from "../socket.js";
 import { Connection } from "@libp2p/interface-connection";
 // @ts-ignore
 import { toMultiaddrConnection } from "@libp2p/tcp/socket-to-conn";
@@ -17,13 +15,14 @@ import * as mafmt from "@multiformats/mafmt";
 const log = logger("libp2p:hypercore");
 
 import isPrivateIp from "private-ip";
+import { DummySocket, MultiSocketProxy, Socket } from "@lumeweb/libhyperproxy";
 
 const CODE_P2P = 421;
 const CODE_CIRCUIT = 290;
 const CODE_UNIX = 400;
 
 export interface HypercoreOptions extends TCPOptions {
-  peerManager?: PeerManager;
+  proxy?: MultiSocketProxy;
 }
 class HypercoreTransport extends TCP {
   private readonly opts?: HypercoreOptions;
@@ -31,10 +30,9 @@ class HypercoreTransport extends TCP {
   constructor(components: TCPComponents, options: HypercoreOptions = {}) {
     super(components, options);
     this.opts = options;
-    if (!options.peerManager) {
+    if (!options.proxy) {
       throw new Error("options.peerManager is required");
     }
-    this.opts?.peerManager;
   }
 
   get [symbol](): true {
@@ -52,7 +50,7 @@ class HypercoreTransport extends TCP {
     const socket = await this._connect(ma, options);
 
     // Avoid uncaught errors caused by unstable connections
-    socket.on("error", (err) => {
+    socket.on("error", (err: any) => {
       log("socket error", err);
     });
 
@@ -154,9 +152,7 @@ class HypercoreTransport extends TCP {
       };
 
       try {
-        rawSocket = (await this.opts?.peerManager?.createSocket(
-          cOpts
-        )) as Socket;
+        rawSocket = (await this.opts?.proxy?.createSocket(cOpts)) as Socket;
       } catch (e: any) {
         onError(e);
       }
@@ -175,7 +171,7 @@ class HypercoreTransport extends TCP {
         options.signal.addEventListener("abort", onAbort);
       }
 
-      rawSocket?.connect();
+      (rawSocket as DummySocket)?.connect();
     });
   }
 
