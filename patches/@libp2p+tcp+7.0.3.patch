@@ -1,0 +1,44 @@
+diff --git a/node_modules/@libp2p/tcp/dist/src/index.js b/node_modules/@libp2p/tcp/dist/src/index.js
+index fe47701..d239a6a 100644
+--- a/node_modules/@libp2p/tcp/dist/src/index.js
++++ b/node_modules/@libp2p/tcp/dist/src/index.js
+@@ -8,7 +8,7 @@ import { TCPListener } from './listener.js';
+ import { toMultiaddrConnection } from './socket-to-conn.js';
+ import { multiaddrToNetConfig } from './utils.js';
+ const log = logger('libp2p:tcp');
+-class TCP {
++export class TCP {
+     opts;
+     metrics;
+     components;
+diff --git a/node_modules/@libp2p/tcp/package.json b/node_modules/@libp2p/tcp/package.json
+index e4524a9..74fa657 100644
+--- a/node_modules/@libp2p/tcp/package.json
++++ b/node_modules/@libp2p/tcp/package.json
+@@ -32,12 +32,20 @@
+     "!dist/test",
+     "!**/*.tsbuildinfo"
+   ],
+-  "exports": {
+-    ".": {
+-      "types": "./dist/src/index.d.ts",
+-      "import": "./dist/src/index.js"
+-    }
+-  },
++    "exports": {
++        ".": {
++            "types": "./dist/src/index.d.ts",
++            "import": "./dist/src/index.js"
++        },
++        "./socket-to-conn": {
++            "types": "./dist/src/socket-to-conn.d.ts",
++            "import": "./dist/src/socket-to-conn.js"
++        },
++        "./utils": {
++            "types": "./dist/src/utils.d.ts",
++            "import": "./dist/src/utils.js"
++        }
++    },
+   "eslintConfig": {
+     "extends": "ipfs",
+     "parserOptions": {

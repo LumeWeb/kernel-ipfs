@@ -1,30 +1,28 @@
-import { createLibp2p } from "libp2p";
+import { createLibp2p, Libp2p } from "libp2p";
 import { createHelia } from "helia";
 import { yamux } from "@chainsafe/libp2p-yamux";
 // @ts-ignore
 import Hyperswarm from "hyperswarm";
-import { Peer, MultiSocketProxy } from "@lumeweb/libhyperproxy";
-// @ts-ignore
-import sodium from "sodium-universal";
-// @ts-ignore
-import { CustomEvent } from "@libp2p/interfaces/events";
-// @ts-ignore
-import { fixed32, raw } from "compact-encoding";
+import { MultiSocketProxy } from "@lumeweb/libhyperproxy";
 import { mplex } from "@libp2p/mplex";
 import { hypercoreTransport } from "./libp2p/transport.js";
 import { UnixFS, unixfs } from "@helia/unixfs";
-// @ts-ignore
+
 import { delegatedPeerRouting } from "@libp2p/delegated-peer-routing";
 import { noise } from "@chainsafe/libp2p-noise";
 import { create as createIpfsHttpClient } from "ipfs-http-client";
 import { delegatedContentRouting } from "@libp2p/delegated-content-routing";
-// @ts-ignore
+
 import type { Options } from "ipfs-core";
 import { multiaddr } from "@multiformats/multiaddr";
 import { DELEGATE_LIST, PROTOCOL } from "./constants.js";
-import { ActiveQuery, addHandler, handleMessage } from "libkmodule";
+import {
+  ActiveQuery,
+  addHandler,
+  handleMessage,
+} from "@lumeweb/libkernel/module";
 import { createClient } from "@lumeweb/kernel-swarm-client";
-import { ipns, ipnsValidator, ipnsSelector, IPNS } from "@helia/ipns";
+import { ipns, IPNS, ipnsSelector, ipnsValidator } from "@helia/ipns";
 import { dht, pubsub } from "@helia/ipns/routing";
 import { kadDHT } from "@libp2p/kad-dht";
 // @ts-ignore
@@ -39,9 +37,11 @@ import { IDBBlockstore } from "blockstore-idb";
 import { IDBDatastore } from "datastore-idb";
 import defer from "p-defer";
 import { Helia } from "@helia/interface";
+// @ts-ignore
+import type { Components } from "libp2p/src/components.js";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
-  bases
+  bases,
 ).reduce((acc, curr) => {
   // @ts-ignore
   acc[bases[curr].prefix] = bases[curr];
@@ -65,7 +65,7 @@ BigInt.prototype.toJSON = function () {
   return this.toString();
 };
 
-addHandler("presentSeed", handlePresentSeed);
+addHandler("presentKey", handlePresentKey);
 addHandler("ready", handleReady);
 addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
@@ -73,7 +73,7 @@ addHandler("cat", handleCat, { receiveUpdates: true });
 addHandler("ipnsResolve", handleIpnsResolve);
 addHandler("getActivePeers", handleGetActivePeers);
 
-async function handlePresentSeed() {
+async function handlePresentKey() {
   swarm = createClient();
 
   const client = createIpfsHttpClient(getDelegateConfig());
@@ -146,10 +146,10 @@ async function handlePresentSeed() {
           "/ip6/2a01:4ff:f0:3764::1/tcp/4001/p2p/12D3KooWSDj6JM2JmoHwE9AUUwqAFUEg9ndd3pMA8aF2bkYckZfo",
           "/ip6/2a01:4ff:f0:3764::1/udp/4001/quic/p2p/12D3KooWSDj6JM2JmoHwE9AUUwqAFUEg9ndd3pMA8aF2bkYckZfo",
         ],
-      }),
+      }) as Components,
     ],
     transports: [hypercoreTransport({ proxy })],
-    connectionEncryption: [noise()],
+    connectionEncryption: [noise() as Components],
     connectionManager: {
       autoDial: true,
       minConnections: 5,
@@ -183,10 +183,9 @@ async function handlePresentSeed() {
   await datastore.open();
 
   ipfs = await createHelia({
-    // @ts-ignore
     blockstore,
-    // @ts-ignore
     datastore,
+    // @ts-ignore
     libp2p,
   });
 
@@ -245,10 +244,10 @@ async function handleStat(aq: ActiveQuery) {
         JSON.stringify(
           await fs.stat(
             getCID(aq.callerInput.cid),
-            aq.callerInput.options ?? {}
-          )
-        )
-      )
+            aq.callerInput.options ?? {},
+          ),
+        ),
+      ),
     );
   } catch (e) {
     aq.reject((e as Error).message);
@@ -278,7 +277,7 @@ async function handleLs(aq: ActiveQuery) {
   });
   const iterable = fs.ls(
     getCID(aq.callerInput.cid),
-    aq.callerInput.options ?? {}
+    aq.callerInput.options ?? {},
   );
 
   for await (const item of iterable) {
@@ -318,7 +317,7 @@ async function handleCat(aq: ActiveQuery) {
 
   const iterable = fs.cat(
     getCID(aq.callerInput.cid),
-    aq.callerInput.options ?? {}
+    aq.callerInput.options ?? {},
   );
 
   for await (const chunk of iterable) {
@@ -355,9 +354,9 @@ async function handleIpnsResolve(aq: ActiveQuery) {
       (
         await IPNS.resolve(
           peerIdFromCID(getCID(aq.callerInput.cid)),
-          aq.callerInput?.options
+          aq.callerInput?.options,
         )
-      ).asCID.toString()
+      ).asCID.toString(),
     );
   } catch (e: any) {
     aq.reject((e as Error).message);

@@ -50,6 +50,7 @@ class HypercoreTransport extends TCP {
     const socket = await this._connect(ma, options);
 
     // Avoid uncaught errors caused by unstable connections
+    // @ts-ignore
     socket.on("error", (err: any) => {
       log("socket error", err);
     });
@@ -113,9 +114,10 @@ class HypercoreTransport extends TCP {
 
         const err = new CodeError(
           `connection timeout after ${Date.now() - start}ms`,
-          "ERR_CONNECT_TIMEOUT"
+          "ERR_CONNECT_TIMEOUT",
         );
         // Note: this will result in onError() being called
+        // @ts-ignore
         rawSocket?.emit("error", err);
       };
 
@@ -128,11 +130,13 @@ class HypercoreTransport extends TCP {
       const onAbort = (): void => {
         log("connection aborted %j", cOpts);
         this.metrics?.dialerEvents.increment({ abort: true });
+        // @ts-ignore
         rawSocket?.destroy();
         done(new AbortError());
       };
 
       const done = (err?: any): void => {
+        // @ts-ignore
         rawSocket?.removeListener("error", onError);
         // @ts-ignore
         rawSocket?.removeListener("timeout", onTimeout);
@@ -199,7 +203,7 @@ class HypercoreTransport extends TCP {
 }
 
 export function hypercoreTransport(
-  init: HypercoreOptions = {}
+  init: HypercoreOptions = {},
 ): (components?: TCPComponents) => HypercoreTransport {
   return (components: TCPComponents = {}) => {
     return new HypercoreTransport(components, init);
