@@ -4,6 +4,10 @@
     "type": "module",
     "readme": "ERROR: No README data found!",
     "_id": "@lumeweb/kernel-ipfs@0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "gitea@git.lumeweb.com:LumeWeb/kernel-ipfs.git"
+    },
     "scripts": {
         "prepare": "presetter bootstrap",
         "build": "shx echo 'export default undefined;' > nop.js; run build",
