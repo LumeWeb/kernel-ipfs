@@ -3,7 +3,10 @@
         "@lumeweb/presetter-kernel-module-preset"
     ],
     "config": {
-        "official": true,
-        "browser": true
+        "vite": {
+            "optimize": {
+                "@achingbrain/nat-port-mapper": "export default {}; export const upnpNat = {};"
+            }
+        }
     }
 }
