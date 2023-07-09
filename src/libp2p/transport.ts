@@ -83,6 +83,7 @@ class HypercoreTransport extends TCP {
       throw new AbortError();
     }
 
+    // @ts-ignore
     return conn;
   }
 

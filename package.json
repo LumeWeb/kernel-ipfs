@@ -9,29 +9,26 @@
     },
     "scripts": {
         "prepare": "presetter bootstrap",
-        "build": "shx echo 'export default undefined;' > nop.js; run build",
+        "build": "run build",
         "semantic-release": "semantic-release",
         "postinstall": "patch-package"
     },
     "dependencies": {
-        "@chainsafe/libp2p-yamux": "^4.0.2",
-        "@helia/interface": "^1.2.1",
         "@helia/ipns": "^1.1.3",
         "@helia/unixfs": "^1.4.0",
-        "@libp2p/bootstrap": "^8.0.0",
         "@libp2p/delegated-content-routing": "^4.0.6",
         "@libp2p/delegated-peer-routing": "^4.0.9",
         "@libp2p/peer-id": "^2.0.4",
+        "@libp2p/tcp": "7.0.3",
         "@lumeweb/kernel-swarm-client": "^0.0.2-develop.8",
-        "@lumeweb/libhyperproxy": "^0.0.2-develop.1",
+        "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
         "@lumeweb/libkernel": "0.1.0-develop.15",
-        "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.39",
+        "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.40",
         "blockstore-idb": "^1.1.1",
+        "datastore-core": "^9.2.0",
         "datastore-idb": "^2.1.2",
-        "helia": "^1.3.5",
-        "ipfs-core": "^0.18.1",
+        "helia": "1.3.5",
         "ipfs-http-client": "^60.0.1",
-        "libp2p": "^0.42.2",
         "multiformats": "^12.0.1",
         "p-defer": "^4.0.0",
         "path-browserify": "^1.0.1",
@@ -43,5 +40,14 @@
         "os-browserify": "^0.3.0",
         "patch-package": "^7.0.0",
         "rollup-plugin-ignore-import": "^1.3.2"
+    },
+    "overrides": {
+        "libp2p": "^0.45",
+        "@libp2p/kad-dht": "^9.3.8",
+        "@chainsafe/libp2p-noise": "^12.0.0",
+        "@libp2p/mplex": "^8.0.3",
+        "@libp2p/bootstrap": "^8.0.0",
+        "@chainsafe/libp2p-gossipsub": "^8.0.0",
+        "@libp2p/interface-datastore": "^8.0.0"
     }
 }
