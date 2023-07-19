@@ -26,6 +26,7 @@ import { Helia } from "@helia/interface";
 // @ts-ignore
 import type { Components } from "libp2p/src/components.js";
 import { libp2pConfig } from "./config.js";
+import { createClient as createNetworkRegistryClient } from "@lumeweb/kernel-network-registry-client";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases,
@@ -35,11 +36,14 @@ const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   return acc;
 }, {});
 
+const TYPES = ["content"];
+
 onmessage = handleMessage;
 
 const moduleDefer = defer();
 let activeIpfsPeersDefer = defer();
 let networkPeersAvailable = defer();
+const networkRegistry = createNetworkRegistryClient();
 
 let swarm;
 let proxy: MultiSocketProxy;
@@ -53,6 +57,7 @@ BigInt.prototype.toJSON = function () {
 };
 
 addHandler("presentKey", handlePresentKey);
+addHandler("register", handleRegister);
 addHandler("ready", handleReady);
 addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
@@ -283,4 +288,10 @@ async function handleGetActivePeers(aq: ActiveQuery) {
 async function ready() {
   await moduleDefer.promise;
   await networkPeersAvailable.promise;
+}
+
+async function handleRegister(aq: ActiveQuery) {
+  await networkRegistry.registerNetwork(TYPES);
+
+  aq.respond();
 }
