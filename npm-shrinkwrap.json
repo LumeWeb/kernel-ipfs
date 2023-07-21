@@ -15,7 +15,7 @@
                 "@libp2p/delegated-peer-routing": "^4.0.9",
                 "@libp2p/peer-id": "^2.0.4",
                 "@libp2p/tcp": "7.0.3",
-                "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.3",
+                "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.4",
                 "@lumeweb/kernel-swarm-client": "^0.0.2-develop.9",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
                 "@lumeweb/libkernel": "0.1.0-develop.16",
@@ -3107,9 +3107,9 @@
             }
         },
         "node_modules/@lumeweb/kernel-network-registry-client": {
-            "version": "0.1.0-develop.3",
-            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-network-registry-client/-/kernel-network-registry-client-0.1.0-develop.3.tgz",
-            "integrity": "sha512-ZqL9ATbXH3fCTOIXM85jqbn0K3u95B+ZGsz0iaN03L/gcCpF70cSWc4xozhXP4NvixqZn5BrCbNeRodayFoqcw==",
+            "version": "0.1.0-develop.4",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-network-registry-client/-/kernel-network-registry-client-0.1.0-develop.4.tgz",
+            "integrity": "sha512-41VKVCJ71evA+uUdoVxsxLx2hP029Hdv0jmasvVBh/WuSyYiDUm47pdXa+4ct8fIwsLHLCzpFAR/CkpL2F/kog==",
             "dependencies": {
                 "@lumeweb/libkernel": "^0.1.0-develop.20"
             }
