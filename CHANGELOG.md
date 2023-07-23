@@ -1,3 +1,10 @@
+# [0.1.0-develop.4](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.3...v0.1.0-develop.4) (2023-07-23)
+
+
+### Bug Fixes
+
+* need to override protomux with our kernel-protomux-client ([7c8490c](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/7c8490c6f50d2b91880b1aea20f69ce4492dfb01))
+
 # [0.1.0-develop.3](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.2...v0.1.0-develop.3) (2023-07-21)
 
 # [0.1.0-develop.2](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.1...v0.1.0-develop.2) (2023-07-19)
