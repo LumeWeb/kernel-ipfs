@@ -16,6 +16,7 @@
                 "@libp2p/peer-id": "^2.0.4",
                 "@libp2p/tcp": "7.0.3",
                 "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.4",
+                "@lumeweb/kernel-protomux-client": "^0.0.2-develop.12",
                 "@lumeweb/kernel-swarm-client": "^0.0.2-develop.9",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
                 "@lumeweb/libkernel": "0.1.0-develop.16",
@@ -3133,6 +3134,28 @@
                 "@lumeweb/node-library-preset": "0.2.7",
                 "@noble/curves": "^1.1.0",
                 "@noble/hashes": "^1.3.1"
+            }
+        },
+        "node_modules/@lumeweb/kernel-protomux-client": {
+            "version": "0.0.2-develop.12",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-protomux-client/-/kernel-protomux-client-0.0.2-develop.12.tgz",
+            "integrity": "sha512-tphI/uXn1BLu72KSfv6zZUrdP5qpd9+BjAunCZNv3DZhMcXAgFpq+ZFMAToaFQQ4OyS28T5HN7YW2FQTnTJjWw==",
+            "dependencies": {
+                "@lumeweb/kernel-swarm-client": "^0.1.0-develop.1",
+                "@lumeweb/libkernel": "^0.1.0-develop.16",
+                "buffer": "^6.0.3",
+                "p-defer": "^4.0.0"
+            }
+        },
+        "node_modules/@lumeweb/kernel-protomux-client/node_modules/@lumeweb/kernel-swarm-client": {
+            "version": "0.1.0-develop.1",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-swarm-client/-/kernel-swarm-client-0.1.0-develop.1.tgz",
+            "integrity": "sha512-AmdSRGga63XWvJM6SYpuT0RabfZU+ngA9QWFZ2V75hLDGCp0JdkHCYpOOCVurinofGjRJAUwKe8TFsJ6Sgn8JA==",
+            "dependencies": {
+                "@lumeweb/libkernel": "^0.1.0-develop.9",
+                "async-mutex": "^0.4.0",
+                "b4a": "^1.6.4",
+                "backoff.js": "^1.0.4"
             }
         },
         "node_modules/@lumeweb/kernel-swarm-client": {

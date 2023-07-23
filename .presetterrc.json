@@ -4,6 +4,11 @@
     ],
     "config": {
         "vite": {
+            "resolve": {
+                "alias": {
+                    "protomux": "@lumeweb/kernel-protomux-client"
+                }
+            },
             "optimize": {
                 "@achingbrain/nat-port-mapper": "export default {}; export const upnpNat = {};"
             }
