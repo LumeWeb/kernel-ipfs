@@ -43,6 +43,7 @@ onmessage = handleMessage;
 const moduleDefer = defer();
 let activeIpfsPeersDefer = defer();
 let networkPeersAvailable = defer();
+let networkReady = true;
 const networkRegistry = createNetworkRegistryClient();
 
 let swarm;
@@ -58,6 +59,7 @@ BigInt.prototype.toJSON = function () {
 
 addHandler("presentKey", handlePresentKey);
 addHandler("register", handleRegister);
+addHandler("status", handleStatus, { receiveUpdates: true });
 addHandler("ready", handleReady);
 addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
@@ -94,6 +96,7 @@ async function handlePresentKey() {
     if (!ipfs.libp2p.isStarted()) {
       await ipfs.start();
       networkPeersAvailable.resolve();
+      networkReady = true;
     }
   });
 
@@ -294,4 +297,57 @@ async function handleRegister(aq: ActiveQuery) {
   await networkRegistry.registerNetwork(TYPES);
 
   aq.respond();
+}
+
+async function handleStatus(aq: ActiveQuery) {
+  function sendUpdate() {
+    aq.sendUpdate({
+      peers: netPeers,
+      ready: netPeers > 0,
+    });
+  }
+
+  let netPeers = 0;
+  if (!networkReady) {
+    sendUpdate();
+    await ready();
+    getPeers();
+  }
+
+  function getPeers() {
+    netPeers = ipfs.libp2p.getPeers().length;
+  }
+
+  function peersListener() {
+    getPeers();
+    sendUpdate();
+  }
+
+  const peerEvents = ["connection:prune", "peer:connect", "peer:disconnect"];
+  peerEvents.forEach((ev) => {
+    // @ts-ignore
+    ipfs.libp2p.components.connectionManager.events.addEventListener(
+      ev,
+      peersListener,
+    );
+  });
+
+  // @ts-ignore
+  ipfs.libp2p.components.connectionManager.events.addEventListener(
+    "peer:disconnect",
+    peersListener,
+  );
+
+  aq.setReceiveUpdate?.(() => {
+    peerEvents.forEach((ev) => {
+      // @ts-ignore
+      ipfs.libp2p.components.connectionManager.events.removeEventListener(
+        ev,
+        peersListener,
+      );
+    });
+    aq.respond();
+  });
+
+  sendUpdate();
 }
