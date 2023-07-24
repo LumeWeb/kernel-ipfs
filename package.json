@@ -26,6 +26,7 @@
         "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
         "@lumeweb/libkernel": "0.1.0-develop.27",
         "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.43",
+        "@peculiar/webcrypto": "^1.4.3",
         "blockstore-idb": "^1.1.1",
         "datastore-core": "^9.2.0",
         "datastore-idb": "^2.1.2",
