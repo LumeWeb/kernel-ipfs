@@ -18,6 +18,7 @@ import { delegatedPeerRouting } from "@libp2p/delegated-peer-routing";
 import { create as createIpfsHttpClient } from "ipfs-http-client";
 import { DELEGATE_LIST } from "./constants.js";
 import { multiaddr } from "@multiformats/multiaddr";
+import { ipniContentRouting } from "@libp2p/ipni-content-routing";
 
 function getDelegateConfig(): any {
   const delegateString =
@@ -49,7 +50,10 @@ export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
     connectionEncryption: [noise()],
     streamMuxers: [yamux(), mplex()],
     peerDiscovery: [bootstrap(bootstrapConfig)],
-    contentRouters: [delegatedContentRouting(client)],
+    contentRouters: [
+      delegatedContentRouting(client),
+      ipniContentRouting("https://cid.contact"),
+    ],
     peerRouters: [delegatedPeerRouting(client)],
     services: {
       identify: identifyService(),
