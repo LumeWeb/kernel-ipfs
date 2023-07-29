@@ -20,7 +20,7 @@
                 "@lumeweb/kernel-swarm-client": "0.1.0-develop.5",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
                 "@lumeweb/libkernel": "0.1.0-develop.31",
-                "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.43",
+                "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.44",
                 "@peculiar/webcrypto": "^1.4.3",
                 "blockstore-idb": "^1.1.1",
                 "datastore-core": "^9.2.0",
@@ -3211,9 +3211,9 @@
             }
         },
         "node_modules/@lumeweb/presetter-kernel-module-preset": {
-            "version": "0.1.0-develop.43",
-            "resolved": "https://registry.npmjs.org/@lumeweb/presetter-kernel-module-preset/-/presetter-kernel-module-preset-0.1.0-develop.43.tgz",
-            "integrity": "sha512-cRbE+P1R+qc2nUZZRjRcNuqab9bf8cecMp2QGAiqc/OM3C8VsSRatquB77wO+3VyyYNLbo71SBQ2TIxx1q6Mow==",
+            "version": "0.1.0-develop.44",
+            "resolved": "https://registry.npmjs.org/@lumeweb/presetter-kernel-module-preset/-/presetter-kernel-module-preset-0.1.0-develop.44.tgz",
+            "integrity": "sha512-e5vMyTQW/gS93mt9qWqvJTcRYS0Dhi+PdpZR3FMO8y7CEp6f56dwKGz60EXOQOQVBDUqDuipf2KXRDnf0/gjDw==",
             "dependencies": {
                 "@lumeweb/node-library-preset": "0.2.7",
                 "buffer": "^6.0.3",
