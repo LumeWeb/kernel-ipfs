@@ -60,6 +60,7 @@ BigInt.prototype.toJSON = function () {
 addHandler("presentKey", handlePresentKey);
 addHandler("register", handleRegister);
 addHandler("status", handleStatus, { receiveUpdates: true });
+addHandler("name", handleName);
 addHandler("ready", handleReady);
 addHandler("stat", handleStat);
 addHandler("ls", handleLs, { receiveUpdates: true });
@@ -350,4 +351,8 @@ async function handleStatus(aq: ActiveQuery) {
   });
 
   sendUpdate();
+}
+
+function handleName(aq: ActiveQuery) {
+  aq.respond("IPFS");
 }
