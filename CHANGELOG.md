@@ -1,3 +1,10 @@
+# [0.1.0-develop.9](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.8...v0.1.0-develop.9) (2023-07-29)
+
+
+### Features
+
+* add name api call ([005a128](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/005a128a2c159ca88199bb85598a24fd0c9b2da6))
+
 # [0.1.0-develop.8](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.7...v0.1.0-develop.8) (2023-07-24)
 
 
