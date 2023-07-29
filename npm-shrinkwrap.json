@@ -17,9 +17,9 @@
                 "@libp2p/tcp": "7.0.3",
                 "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.4",
                 "@lumeweb/kernel-protomux-client": "^0.0.2-develop.15",
-                "@lumeweb/kernel-swarm-client": "0.1.0-develop.4",
+                "@lumeweb/kernel-swarm-client": "0.1.0-develop.5",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.2",
-                "@lumeweb/libkernel": "0.1.0-develop.27",
+                "@lumeweb/libkernel": "0.1.0-develop.31",
                 "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.43",
                 "@peculiar/webcrypto": "^1.4.3",
                 "blockstore-idb": "^1.1.1",
@@ -3128,9 +3128,9 @@
             }
         },
         "node_modules/@lumeweb/kernel-swarm-client": {
-            "version": "0.1.0-develop.4",
-            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-swarm-client/-/kernel-swarm-client-0.1.0-develop.4.tgz",
-            "integrity": "sha512-jeNdUVoor3mK4f6smRIevIcWUFfAfdn6PXsqWaAIX4qi1qvyXy4YMZWBVHvWa2tTSch7qMuX26gBOT9wbFH14w==",
+            "version": "0.1.0-develop.5",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-swarm-client/-/kernel-swarm-client-0.1.0-develop.5.tgz",
+            "integrity": "sha512-jDlHdADMpa5fRqW0peb/2uI0V1JSmkA8bh3G3TrEjlhjGTaZXN/KZPvlAvNJAimzV7gsOZ98cSs8wVGqo9shUA==",
             "dependencies": {
                 "@lumeweb/libkernel": "^0.1.0-develop.9",
                 "async-mutex": "^0.4.0",
@@ -3151,9 +3151,9 @@
             }
         },
         "node_modules/@lumeweb/libkernel": {
-            "version": "0.1.0-develop.27",
-            "resolved": "https://registry.npmjs.org/@lumeweb/libkernel/-/libkernel-0.1.0-develop.27.tgz",
-            "integrity": "sha512-XkO16wzr2k1j9CrraVrL5vm5ysY+wJGwfJf9/PAknpLGko8j8Z/TbO5h/Q43iNjYjLlwBL2cGngX8orCZBWVDA==",
+            "version": "0.1.0-develop.31",
+            "resolved": "https://registry.npmjs.org/@lumeweb/libkernel/-/libkernel-0.1.0-develop.31.tgz",
+            "integrity": "sha512-uTyK2yvAvCo6hQAYILkl+Abfto0ky5ZB6UFg+LkMY2xG6KjdIxzgragQ4dI2UWvwkDGaQM+jyvxI4Bqx4le6PA==",
             "dependencies": {
                 "@lumeweb/libweb": "0.2.0-develop.27",
                 "emittery": "^1.0.1",
