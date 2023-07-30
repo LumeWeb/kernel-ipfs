@@ -1,3 +1,10 @@
+# [0.1.0-develop.11](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.10...v0.1.0-develop.11) (2023-07-29)
+
+
+### Features
+
+* add ipni fallback ([a61b0d4](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/a61b0d4771e885092bb47216f5fd525fa27caf4b))
+
 # [0.1.0-develop.10](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.9...v0.1.0-develop.10) (2023-07-29)
 
 # [0.1.0-develop.9](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.8...v0.1.0-develop.9) (2023-07-29)
