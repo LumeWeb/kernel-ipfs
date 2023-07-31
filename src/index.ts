@@ -339,6 +339,8 @@ async function handleStatus(aq: ActiveQuery) {
     peersListener,
   );
 
+  ipfs.libp2p.addEventListener("start", peersListener);
+
   aq.setReceiveUpdate?.(() => {
     peerEvents.forEach((ev) => {
       // @ts-ignore
@@ -347,6 +349,7 @@ async function handleStatus(aq: ActiveQuery) {
         peersListener,
       );
     });
+    ipfs.libp2p.removeEventListener("start", peersListener);
     aq.respond();
   });
 
