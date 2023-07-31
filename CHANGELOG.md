@@ -1,3 +1,10 @@
+# [0.1.0-develop.15](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.14...v0.1.0-develop.15) (2023-07-31)
+
+
+### Bug Fixes
+
+* add delegatedContentRouting back for now ([6298d8e](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/6298d8e914eafdc62a23b0bad548902545489c4e))
+
 # [0.1.0-develop.14](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.13...v0.1.0-develop.14) (2023-07-31)
 
 
