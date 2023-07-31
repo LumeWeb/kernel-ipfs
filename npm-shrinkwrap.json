@@ -1,12 +1,12 @@
 {
     "name": "@lumeweb/kernel-ipfs",
-    "version": "0.1.0-develop.12",
+    "version": "0.1.0-develop.13",
     "lockfileVersion": 3,
     "requires": true,
     "packages": {
         "": {
             "name": "@lumeweb/kernel-ipfs",
-            "version": "0.1.0-develop.12",
+            "version": "0.1.0-develop.13",
             "hasInstallScript": true,
             "dependencies": {
                 "@helia/ipns": "^1.1.3",
