@@ -19,6 +19,7 @@
         "@libp2p/delegated-content-routing": "^4.0.6",
         "@libp2p/delegated-peer-routing": "^4.0.9",
         "@libp2p/peer-id": "^2.0.4",
+        "@libp2p/reframe-content-routing": "^1.0.1",
         "@libp2p/tcp": "7.0.3",
         "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.5",
         "@lumeweb/kernel-protomux-client": "^0.0.2-develop.15",

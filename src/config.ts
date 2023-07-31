@@ -13,26 +13,8 @@ import type { PubSub } from "@libp2p/interface-pubsub";
 import type { Libp2pOptions } from "libp2p";
 import { hypercoreTransport } from "./libp2p/transport.js";
 import { MultiSocketProxy } from "@lumeweb/libhyperproxy";
-import { delegatedContentRouting } from "@libp2p/delegated-content-routing";
-import { delegatedPeerRouting } from "@libp2p/delegated-peer-routing";
-import { create as createIpfsHttpClient } from "ipfs-http-client";
-import { DELEGATE_LIST } from "./constants.js";
-import { multiaddr } from "@multiformats/multiaddr";
 import { ipniContentRouting } from "@libp2p/ipni-content-routing";
-
-function getDelegateConfig(): any {
-  const delegateString =
-    DELEGATE_LIST[Math.floor(Math.random() * DELEGATE_LIST.length)];
-  const delegateAddr = multiaddr(delegateString).toOptions();
-
-  return {
-    // @ts-ignore
-    host: delegateAddr.host,
-    // @ts-ignore
-    protocol: parseInt(delegateAddr.port) === 443 ? "https" : "http",
-    port: delegateAddr.port,
-  };
-}
+import { reframeContentRouting } from "@libp2p/reframe-content-routing";
 
 export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
   dht: DualKadDHT;
@@ -40,8 +22,6 @@ export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
   identify: unknown;
   autoNAT: unknown;
 }> {
-  const client = createIpfsHttpClient(getDelegateConfig());
-
   return {
     addresses: {
       listen: [],
@@ -51,10 +31,9 @@ export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
     streamMuxers: [yamux(), mplex()],
     peerDiscovery: [bootstrap(bootstrapConfig)],
     contentRouters: [
-      delegatedContentRouting(client),
       ipniContentRouting("https://cid.contact"),
+      reframeContentRouting("https://cid.contact/reframe"),
     ],
-    peerRouters: [delegatedPeerRouting(client)],
     services: {
       identify: identifyService(),
       autoNAT: autoNATService(),
