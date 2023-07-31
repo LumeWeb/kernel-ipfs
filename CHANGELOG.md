@@ -1,3 +1,10 @@
+# [0.1.0-develop.14](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.13...v0.1.0-develop.14) (2023-07-31)
+
+
+### Bug Fixes
+
+* if the network is ready then fetch the peer count ([a27aeb2](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/a27aeb2ec8493b933b3305b2b14e3c960d7c1d0c))
+
 # [0.1.0-develop.13](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.12...v0.1.0-develop.13) (2023-07-31)
 
 
