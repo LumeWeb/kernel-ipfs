@@ -1,3 +1,10 @@
+# [0.1.0-develop.13](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.12...v0.1.0-develop.13) (2023-07-31)
+
+
+### Bug Fixes
+
+* add event listener on libp2p start for redundancy to ensure we max the events to read the peer count ([f1b8a60](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/f1b8a603dfdca93e08692e7ad29fd2466c76d6d0))
+
 # [0.1.0-develop.12](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.11...v0.1.0-develop.12) (2023-07-30)
 
 # [0.1.0-develop.11](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.10...v0.1.0-develop.11) (2023-07-29)
