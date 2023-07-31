@@ -313,6 +313,8 @@ async function handleStatus(aq: ActiveQuery) {
     sendUpdate();
     await ready();
     getPeers();
+  } else {
+    getPeers();
   }
 
   function getPeers() {
