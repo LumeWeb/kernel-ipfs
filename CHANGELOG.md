@@ -1,3 +1,5 @@
+# [0.1.0-develop.16](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.15...v0.1.0-develop.16) (2023-09-02)
+
 # [0.1.0-develop.15](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.14...v0.1.0-develop.15) (2023-07-31)
 
 
