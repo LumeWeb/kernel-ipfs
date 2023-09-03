@@ -25,7 +25,7 @@
         "@lumeweb/kernel-protomux-client": "^0.0.2-develop.19",
         "@lumeweb/kernel-swarm-client": "0.1.0-develop.8",
         "@lumeweb/libhyperproxy": "^0.0.2-develop.4",
-        "@lumeweb/libkernel": "0.1.0-develop.38",
+        "@lumeweb/libkernel": "0.1.0-develop.39",
         "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.44",
         "@peculiar/webcrypto": "^1.4.3",
         "blockstore-idb": "^1.1.1",
