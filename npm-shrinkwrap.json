@@ -16,7 +16,7 @@
                 "@libp2p/peer-id": "^2.0.4",
                 "@libp2p/reframe-content-routing": "^1.0.1",
                 "@libp2p/tcp": "7.0.3",
-                "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.5",
+                "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.9",
                 "@lumeweb/kernel-protomux-client": "^0.0.2-develop.19",
                 "@lumeweb/kernel-swarm-client": "0.1.0-develop.8",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.4",
@@ -3131,11 +3131,11 @@
             }
         },
         "node_modules/@lumeweb/kernel-network-registry-client": {
-            "version": "0.1.0-develop.5",
-            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-network-registry-client/-/kernel-network-registry-client-0.1.0-develop.5.tgz",
-            "integrity": "sha512-4ijBHvJKtiOrGrzJkytmNBNa0FpRy8y9w2OmzxP1yA4aCjVq5hxqKR0NSupXeBjhMNCD8Va3aM0a6I7tGFnF1w==",
+            "version": "0.1.0-develop.9",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-network-registry-client/-/kernel-network-registry-client-0.1.0-develop.9.tgz",
+            "integrity": "sha512-JeJD8hHXXKOAmif7DKTy3f3M6TsHuvn7LnWIlxocz7uPjMRf9T1dTuKu4NQdBssYY1caTxOiCbhTfXCaUhzEaQ==",
             "dependencies": {
-                "@lumeweb/libkernel": "^0.1.0-develop.20"
+                "@lumeweb/libkernel": "^0.1.0-develop.39"
             }
         },
         "node_modules/@lumeweb/kernel-protomux-client": {
