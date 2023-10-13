@@ -17,8 +17,8 @@
                 "@libp2p/reframe-content-routing": "^1.0.1",
                 "@libp2p/tcp": "7.0.3",
                 "@lumeweb/kernel-network-registry-client": "^0.1.0-develop.10",
-                "@lumeweb/kernel-protomux-client": "^0.0.2-develop.21",
-                "@lumeweb/kernel-swarm-client": "0.1.0-develop.11",
+                "@lumeweb/kernel-protomux-client": "^0.0.2-develop.22",
+                "@lumeweb/kernel-swarm-client": "0.1.0-develop.12",
                 "@lumeweb/libhyperproxy": "^0.0.2-develop.4",
                 "@lumeweb/libkernel": "0.1.0-develop.66",
                 "@lumeweb/presetter-kernel-module-preset": "^0.1.0-develop.44",
@@ -3139,20 +3139,20 @@
             }
         },
         "node_modules/@lumeweb/kernel-protomux-client": {
-            "version": "0.0.2-develop.21",
-            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-protomux-client/-/kernel-protomux-client-0.0.2-develop.21.tgz",
-            "integrity": "sha512-c4l7N/oHqsrf3tnsF0yUJajqhwwDOK8gnctKAZrb2raftapSqfoflwz9HzM+KKSdVhJjrwrWYB7WPgsAd+GHqw==",
+            "version": "0.0.2-develop.22",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-protomux-client/-/kernel-protomux-client-0.0.2-develop.22.tgz",
+            "integrity": "sha512-Bfo1VF4KlPZpy6dU1ie+JAV/R4vsrebnAwFh9QFCLpscbDbsDwP3hw4gFF0FlWEgfRcH7gjyuLBP/gS/aAICEQ==",
             "dependencies": {
-                "@lumeweb/kernel-swarm-client": "^0.1.0-develop.10",
+                "@lumeweb/kernel-swarm-client": "^0.1.0-develop.11",
                 "@lumeweb/libkernel": "^0.1.0-develop.66",
                 "buffer": "^6.0.3",
                 "p-defer": "^4.0.0"
             }
         },
         "node_modules/@lumeweb/kernel-swarm-client": {
-            "version": "0.1.0-develop.11",
-            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-swarm-client/-/kernel-swarm-client-0.1.0-develop.11.tgz",
-            "integrity": "sha512-VRqawt57RwOPB5w79XML/VzPxpYXkVyplQOS73Q0Qp5zNRpxMo8rla66ddQCZyiL6zlatIl9EzFM9J9hYAO6qg==",
+            "version": "0.1.0-develop.12",
+            "resolved": "https://registry.npmjs.org/@lumeweb/kernel-swarm-client/-/kernel-swarm-client-0.1.0-develop.12.tgz",
+            "integrity": "sha512-DnIuqvddY0cKS5MhaoMG+O5NnaZf8KHwE0aRIezVJQQOEATcFdc5N/386BeZoOPAaFtveag1OAMYdchVKbOVHA==",
             "dependencies": {
                 "@lumeweb/libkernel": "^0.1.0-develop.66",
                 "async-mutex": "^0.4.0",
