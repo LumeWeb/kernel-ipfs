@@ -1,3 +1,5 @@
+import type { BootstrapInit } from "@libp2p/bootstrap";
+
 export const bootstrapConfig = {
   list: [
     "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
@@ -54,4 +56,4 @@ export const bootstrapConfig = {
     "/ip6/2a01:4ff:f0:3764::1/tcp/4001/p2p/12D3KooWSDj6JM2JmoHwE9AUUwqAFUEg9ndd3pMA8aF2bkYckZfo",
     "/ip6/2a01:4ff:f0:3764::1/udp/4001/quic/p2p/12D3KooWSDj6JM2JmoHwE9AUUwqAFUEg9ndd3pMA8aF2bkYckZfo",
   ],
-};
+} as BootstrapInit;

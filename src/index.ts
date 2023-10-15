@@ -1,6 +1,4 @@
 import { createHelia } from "helia";
-// @ts-ignore
-import Hyperswarm from "hyperswarm";
 import { MultiSocketProxy } from "@lumeweb/libhyperproxy";
 import { UnixFS, unixfs } from "@helia/unixfs";
 import { PROTOCOL } from "./constants.js";
@@ -11,9 +9,8 @@ import {
 } from "@lumeweb/libkernel/module";
 import { createClient } from "@lumeweb/kernel-swarm-client";
 import { ipns, IPNS } from "@helia/ipns";
-import { dht, pubsub } from "@helia/ipns/routing";
+import { dht } from "@helia/ipns/routing";
 // @ts-ignore
-import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { CID } from "multiformats/cid";
 import { bases } from "multiformats/basics";
 import { substr } from "runes2";
@@ -27,6 +24,7 @@ import { Helia } from "@helia/interface";
 import type { Components } from "libp2p/src/components.js";
 import { libp2pConfig } from "./config.js";
 import { createClient as createNetworkRegistryClient } from "@lumeweb/kernel-network-registry-client";
+import { Libp2p } from "@libp2p/interface";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases,
@@ -50,7 +48,7 @@ let swarm;
 let proxy: MultiSocketProxy;
 let fs: UnixFS;
 let IPNS: IPNS;
-let ipfs: Helia;
+let ipfs: Helia<Libp2p<any>>;
 
 // @ts-ignore
 BigInt.prototype.toJSON = function () {
@@ -106,7 +104,7 @@ async function handlePresentKey() {
   await swarm.ready();
   // @ts-ignore
   fs = unixfs(ipfs);
-  IPNS = ipns(ipfs as any, [dht(ipfs), pubsub(ipfs as any)]);
+  IPNS = ipns(ipfs as any, [dht(ipfs)]);
 
   ipfs.libp2p.addEventListener("peer:connect", () => {
     if (ipfs.libp2p.getPeers().length > 0) {

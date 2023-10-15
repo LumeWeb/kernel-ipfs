@@ -18,7 +18,14 @@ import { reframeContentRouting } from "@libp2p/reframe-content-routing";
 import { multiaddr } from "@multiformats/multiaddr";
 import { create as createIpfsHttpClient } from "ipfs-http-client";
 import { delegatedContentRouting } from "@libp2p/delegated-content-routing";
+import { delegatedPeerRouting } from "@libp2p/delegated-peer-routing";
+import { circuitRelayTransport } from "libp2p/circuit-relay";
 import { DELEGATE_LIST } from "./constants.js";
+import { webSockets } from "@libp2p/websockets";
+import { webTransport } from "@libp2p/webtransport";
+import { dcutrService } from "libp2p/dcutr";
+// @ts-ignore
+import type { DefaultLibp2pServices } from "helia/dist/src/utils/libp2p-defaults.browser.js";
 
 function getDelegateConfig(): any {
   const delegateString =
@@ -34,19 +41,22 @@ function getDelegateConfig(): any {
   };
 }
 
-export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
-  dht: DualKadDHT;
-  pubsub: PubSub;
-  identify: unknown;
-  autoNAT: unknown;
-}> {
+export function libp2pConfig(
+  proxy: MultiSocketProxy,
+): Libp2pOptions<DefaultLibp2pServices> {
   const client = createIpfsHttpClient(getDelegateConfig());
 
   return {
     addresses: {
       listen: [],
     },
-    transports: [hypercoreTransport({ proxy })],
+    transports: [
+      circuitRelayTransport({
+        discoverRelays: 1,
+      }),
+      webTransport(),
+      webSockets(),
+    ],
     connectionEncryption: [noise()],
     streamMuxers: [yamux(), mplex()],
     peerDiscovery: [bootstrap(bootstrapConfig)],
@@ -55,10 +65,12 @@ export function libp2pConfig(proxy: MultiSocketProxy): Libp2pOptions<{
       ipniContentRouting("https://cid.contact"),
       reframeContentRouting("https://cid.contact/reframe"),
     ],
+    peerRouters: [delegatedPeerRouting(client)],
     services: {
       identify: identifyService(),
       autoNAT: autoNATService(),
       pubsub: gossipsub(),
+      dcutr: dcutrService(),
       dht: kadDHT({
         clientMode: true,
         validators: {
