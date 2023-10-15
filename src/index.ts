@@ -43,7 +43,7 @@ onmessage = handleMessage;
 const moduleDefer = defer();
 let activeIpfsPeersDefer = defer();
 let networkPeersAvailable = defer();
-let networkReady = true;
+let networkReady = false;
 const networkRegistry = createNetworkRegistryClient();
 
 let swarm;
