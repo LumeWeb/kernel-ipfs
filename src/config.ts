@@ -51,6 +51,7 @@ export function libp2pConfig(
       listen: [],
     },
     transports: [
+      hypercoreTransport({ proxy }),
       circuitRelayTransport({
         discoverRelays: 1,
       }),
