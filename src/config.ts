@@ -62,11 +62,9 @@ export function libp2pConfig(
     streamMuxers: [yamux(), mplex()],
     peerDiscovery: [bootstrap(bootstrapConfig)],
     contentRouters: [
-      delegatedContentRouting(client),
       ipniContentRouting("https://cid.contact"),
       reframeContentRouting("https://cid.contact/reframe"),
     ],
-    peerRouters: [delegatedPeerRouting(client)],
     services: {
       identify: identifyService(),
       autoNAT: autoNATService(),
