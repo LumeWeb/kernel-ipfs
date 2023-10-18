@@ -1,3 +1,10 @@
+# [0.1.0-develop.22](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.21...v0.1.0-develop.22) (2023-10-15)
+
+
+### Bug Fixes
+
+* networkReady should start as false ([a07dc0d](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/a07dc0d613ee0ba79acf6c01df8eb34c58512939))
+
 # [0.1.0-develop.21](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.20...v0.1.0-develop.21) (2023-10-13)
 
 # [0.1.0-develop.20](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.19...v0.1.0-develop.20) (2023-10-12)
