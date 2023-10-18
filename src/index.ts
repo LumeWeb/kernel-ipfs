@@ -15,16 +15,16 @@ import { CID } from "multiformats/cid";
 import { bases } from "multiformats/basics";
 import { substr } from "runes2";
 import { MultibaseDecoder } from "multiformats";
-import { peerIdFromCID } from "@libp2p/peer-id";
 import { IDBBlockstore } from "blockstore-idb";
 import { IDBDatastore } from "datastore-idb";
 import defer from "p-defer";
 import { Helia } from "@helia/interface";
-// @ts-ignore
-import type { Components } from "libp2p/src/components.js";
 import { libp2pConfig } from "./config.js";
 import { createClient as createNetworkRegistryClient } from "@lumeweb/kernel-network-registry-client";
 import { Libp2p } from "@libp2p/interface";
+import { unmarshal as ipnsUnmarshal } from "ipns";
+
+const IPFS_GATEWAY = "https://ipfs.lumeweb.com";
 
 const basesByPrefix: { [prefix: string]: MultibaseDecoder<any> } = Object.keys(
   bases,
@@ -251,16 +251,18 @@ async function handleIpnsResolve(aq: ActiveQuery) {
     aq.reject("cid required");
     return;
   }
-
   try {
-    return aq.respond(
-      (
-        await IPNS.resolve(
-          peerIdFromCID(getCID(aq.callerInput.cid)),
-          aq.callerInput?.options,
-        )
-      ).asCID.toString(),
+    const cid = getCID(aq.callerInput.cid);
+
+    const ret = await fetch(
+      `${IPFS_GATEWAY}/ipns/${cid.toString()}?format=ipns-record`,
     );
+
+    const buf = await ret.arrayBuffer();
+
+    const record = ipnsUnmarshal(new Uint8Array(buf));
+
+    return aq.respond(record.value);
   } catch (e: any) {
     aq.reject((e as Error).message);
   }

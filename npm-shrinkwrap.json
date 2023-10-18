@@ -28,6 +28,7 @@
                 "datastore-idb": "^2.1.2",
                 "helia": "^2.0.3",
                 "ipfs-http-client": "^60.0.1",
+                "ipns": "^7.0.1",
                 "multiformats": "^12.0.1",
                 "p-defer": "^4.0.0",
                 "path-browserify": "^1.0.1",
@@ -1386,6 +1387,80 @@
                 "progress-events": "^1.0.0",
                 "uint8arrays": "^4.0.3"
             },
+            "engines": {
+                "node": ">=16.0.0",
+                "npm": ">=7.0.0"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/@libp2p/crypto": {
+            "version": "2.0.5",
+            "resolved": "https://registry.npmjs.org/@libp2p/crypto/-/crypto-2.0.5.tgz",
+            "integrity": "sha512-m6Rn7i9q3SHCzMUBkEwZgAKS4evpGQ4SEx/YD96pM0ZoPtU5PFO0psfrerraanxFBh8wUX4vkCtKfyTPH7F+bQ==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "@noble/curves": "^1.1.0",
+                "@noble/hashes": "^1.3.1",
+                "multiformats": "^12.0.1",
+                "node-forge": "^1.1.0",
+                "protons-runtime": "^5.0.0",
+                "uint8arraylist": "^2.4.3",
+                "uint8arrays": "^4.0.6"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/@libp2p/crypto/node_modules/multiformats": {
+            "version": "12.1.2",
+            "resolved": "https://registry.npmjs.org/multiformats/-/multiformats-12.1.2.tgz",
+            "integrity": "sha512-6mRIsrZXyw5xNPO31IGBMmxgDXBSgCGDsBAtazkZ02ip4hMwZNrQvfxXZtytRoBSWuzSq5f9VmMnXj76fIz5FQ==",
+            "engines": {
+                "node": ">=16.0.0",
+                "npm": ">=7.0.0"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/ipns": {
+            "version": "6.0.7",
+            "resolved": "https://registry.npmjs.org/ipns/-/ipns-6.0.7.tgz",
+            "integrity": "sha512-VHC7XAEjqQwBzP1PbCRVOhGo4QFQTVuV93m8Ul3flzJt77WQWU6XPitXUPOT+LZ8yrObMXHzlt/ZheP3Ypwi4g==",
+            "dependencies": {
+                "@libp2p/crypto": "^2.0.3",
+                "@libp2p/interface": "^0.1.2",
+                "@libp2p/logger": "^3.0.2",
+                "@libp2p/peer-id": "^3.0.2",
+                "cborg": "^4.0.1",
+                "err-code": "^3.0.1",
+                "interface-datastore": "^8.1.0",
+                "multiformats": "^12.0.1",
+                "protons-runtime": "^5.0.0",
+                "timestamp-nano": "^1.0.0",
+                "uint8arraylist": "^2.4.3",
+                "uint8arrays": "^4.0.2"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/ipns/node_modules/@libp2p/logger": {
+            "version": "3.0.3",
+            "resolved": "https://registry.npmjs.org/@libp2p/logger/-/logger-3.0.3.tgz",
+            "integrity": "sha512-85ioPX10QN4ZOZeurAZe5sQeRUCkIBT2DikKRbE/AIWKauIKHvvIrN4CSdCdzLw29XNA+xxNO2FVkf51HGgCeQ==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "@multiformats/multiaddr": "^12.1.5",
+                "debug": "^4.3.4",
+                "interface-datastore": "^8.2.0",
+                "multiformats": "^12.0.1"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/ipns/node_modules/@libp2p/peer-id": {
+            "version": "3.0.3",
+            "resolved": "https://registry.npmjs.org/@libp2p/peer-id/-/peer-id-3.0.3.tgz",
+            "integrity": "sha512-IPVeywoC40bDd3ohtAIzpN8AOkMmD3U0BjdrFz/5ZbNP1+4n2gDIAwVzkAbF/t1iYYS4CX1TWfHuMqaMvd8l1A==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "multiformats": "^12.0.1",
+                "uint8arrays": "^4.0.6"
+            }
+        },
+        "node_modules/@helia/ipns/node_modules/ipns/node_modules/multiformats": {
+            "version": "12.1.2",
+            "resolved": "https://registry.npmjs.org/multiformats/-/multiformats-12.1.2.tgz",
+            "integrity": "sha512-6mRIsrZXyw5xNPO31IGBMmxgDXBSgCGDsBAtazkZ02ip4hMwZNrQvfxXZtytRoBSWuzSq5f9VmMnXj76fIz5FQ==",
             "engines": {
                 "node": ">=16.0.0",
                 "npm": ">=7.0.0"
@@ -6799,11 +6874,11 @@
             }
         },
         "node_modules/cborg": {
-            "version": "1.10.2",
-            "resolved": "https://registry.npmjs.org/cborg/-/cborg-1.10.2.tgz",
-            "integrity": "sha512-b3tFPA9pUr2zCUiCfRd2+wok2/LBSNUMKOuRRok+WlvvAgEt/PlbgPTsZUcwCOs53IJvLgTp0eotwtosE6njug==",
+            "version": "4.0.3",
+            "resolved": "https://registry.npmjs.org/cborg/-/cborg-4.0.3.tgz",
+            "integrity": "sha512-poLvpK30KT5KI8gzDx3J/IuVCbsLqMT2fEbOrOuX0H7Hyj8yg5LezeWhRh9aLa5Z6MfPC5sriW3HVJF328M8LQ==",
             "bin": {
-                "cborg": "cli.js"
+                "cborg": "lib/bin.js"
             }
         },
         "node_modules/chalk": {
@@ -10386,21 +10461,6 @@
                 "progress-events": "^1.0.0"
             }
         },
-        "node_modules/helia/node_modules/@libp2p/crypto": {
-            "version": "2.0.5",
-            "resolved": "https://registry.npmjs.org/@libp2p/crypto/-/crypto-2.0.5.tgz",
-            "integrity": "sha512-m6Rn7i9q3SHCzMUBkEwZgAKS4evpGQ4SEx/YD96pM0ZoPtU5PFO0psfrerraanxFBh8wUX4vkCtKfyTPH7F+bQ==",
-            "dependencies": {
-                "@libp2p/interface": "^0.1.3",
-                "@noble/curves": "^1.1.0",
-                "@noble/hashes": "^1.3.1",
-                "multiformats": "^12.0.1",
-                "node-forge": "^1.1.0",
-                "protons-runtime": "^5.0.0",
-                "uint8arraylist": "^2.4.3",
-                "uint8arrays": "^4.0.6"
-            }
-        },
         "node_modules/helia/node_modules/@libp2p/logger": {
             "version": "3.0.3",
             "resolved": "https://registry.npmjs.org/@libp2p/logger/-/logger-3.0.3.tgz",
@@ -10411,16 +10471,6 @@
                 "debug": "^4.3.4",
                 "interface-datastore": "^8.2.0",
                 "multiformats": "^12.0.1"
-            }
-        },
-        "node_modules/helia/node_modules/@libp2p/peer-id": {
-            "version": "3.0.3",
-            "resolved": "https://registry.npmjs.org/@libp2p/peer-id/-/peer-id-3.0.3.tgz",
-            "integrity": "sha512-IPVeywoC40bDd3ohtAIzpN8AOkMmD3U0BjdrFz/5ZbNP1+4n2gDIAwVzkAbF/t1iYYS4CX1TWfHuMqaMvd8l1A==",
-            "dependencies": {
-                "@libp2p/interface": "^0.1.3",
-                "multiformats": "^12.0.1",
-                "uint8arrays": "^4.0.6"
             }
         },
         "node_modules/helia/node_modules/@libp2p/tcp": {
@@ -10453,14 +10503,6 @@
                 "uint8arraylist": "^2.4.3"
             }
         },
-        "node_modules/helia/node_modules/cborg": {
-            "version": "4.0.3",
-            "resolved": "https://registry.npmjs.org/cborg/-/cborg-4.0.3.tgz",
-            "integrity": "sha512-poLvpK30KT5KI8gzDx3J/IuVCbsLqMT2fEbOrOuX0H7Hyj8yg5LezeWhRh9aLa5Z6MfPC5sriW3HVJF328M8LQ==",
-            "bin": {
-                "cborg": "lib/bin.js"
-            }
-        },
         "node_modules/helia/node_modules/ipfs-bitswap": {
             "version": "19.0.1",
             "resolved": "https://registry.npmjs.org/ipfs-bitswap/-/ipfs-bitswap-19.0.1.tgz",
@@ -10489,25 +10531,6 @@
                 "uint8arrays": "^4.0.2",
                 "varint": "^6.0.0",
                 "varint-decoder": "^1.0.0"
-            }
-        },
-        "node_modules/helia/node_modules/ipns": {
-            "version": "7.0.1",
-            "resolved": "https://registry.npmjs.org/ipns/-/ipns-7.0.1.tgz",
-            "integrity": "sha512-S74hlKNeAW9eExGmRwEfOLAk5l/lEL3HajcenbIc7PTeyeL6PkKE31qQmTi7qynn1ll32hMAo1OagbtnceCtXQ==",
-            "dependencies": {
-                "@libp2p/crypto": "^2.0.3",
-                "@libp2p/interface": "^0.1.2",
-                "@libp2p/logger": "^3.0.2",
-                "@libp2p/peer-id": "^3.0.2",
-                "cborg": "^4.0.1",
-                "err-code": "^3.0.1",
-                "interface-datastore": "^8.1.0",
-                "multiformats": "^12.0.1",
-                "protons-runtime": "^5.0.0",
-                "timestamp-nano": "^1.0.0",
-                "uint8arraylist": "^2.4.3",
-                "uint8arrays": "^4.0.2"
             }
         },
         "node_modules/helia/node_modules/it-all": {
@@ -11586,33 +11609,59 @@
             }
         },
         "node_modules/ipns": {
-            "version": "6.0.3",
-            "resolved": "https://registry.npmjs.org/ipns/-/ipns-6.0.3.tgz",
-            "integrity": "sha512-PyCYbK/9+7FZ39ltEVsimeVNl+lZkSEXh+Mo6Xj8eb0DJLwMqiB8uhv9bJpFMYLfsWhHr+m1oOmz4oQU8Ylwzw==",
+            "version": "7.0.1",
+            "resolved": "https://registry.npmjs.org/ipns/-/ipns-7.0.1.tgz",
+            "integrity": "sha512-S74hlKNeAW9eExGmRwEfOLAk5l/lEL3HajcenbIc7PTeyeL6PkKE31qQmTi7qynn1ll32hMAo1OagbtnceCtXQ==",
             "dependencies": {
-                "@libp2p/crypto": "^1.0.0",
-                "@libp2p/interface-dht": "^2.0.0",
-                "@libp2p/interface-keys": "^1.0.3",
-                "@libp2p/interface-peer-id": "^2.0.0",
-                "@libp2p/logger": "^2.0.0",
-                "@libp2p/peer-id": "^2.0.0",
-                "cborg": "^1.3.3",
+                "@libp2p/crypto": "^2.0.3",
+                "@libp2p/interface": "^0.1.2",
+                "@libp2p/logger": "^3.0.2",
+                "@libp2p/peer-id": "^3.0.2",
+                "cborg": "^4.0.1",
                 "err-code": "^3.0.1",
                 "interface-datastore": "^8.1.0",
-                "multiformats": "^11.0.0",
+                "multiformats": "^12.0.1",
                 "protons-runtime": "^5.0.0",
                 "timestamp-nano": "^1.0.0",
                 "uint8arraylist": "^2.4.3",
                 "uint8arrays": "^4.0.2"
             }
         },
-        "node_modules/ipns/node_modules/multiformats": {
-            "version": "11.0.2",
-            "resolved": "https://registry.npmjs.org/multiformats/-/multiformats-11.0.2.tgz",
-            "integrity": "sha512-b5mYMkOkARIuVZCpvijFj9a6m5wMVLC7cf/jIPd5D/ARDOfLC5+IFkbgDXQgcU2goIsTD/O9NY4DI/Mt4OGvlg==",
-            "engines": {
-                "node": ">=16.0.0",
-                "npm": ">=7.0.0"
+        "node_modules/ipns/node_modules/@libp2p/crypto": {
+            "version": "2.0.5",
+            "resolved": "https://registry.npmjs.org/@libp2p/crypto/-/crypto-2.0.5.tgz",
+            "integrity": "sha512-m6Rn7i9q3SHCzMUBkEwZgAKS4evpGQ4SEx/YD96pM0ZoPtU5PFO0psfrerraanxFBh8wUX4vkCtKfyTPH7F+bQ==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "@noble/curves": "^1.1.0",
+                "@noble/hashes": "^1.3.1",
+                "multiformats": "^12.0.1",
+                "node-forge": "^1.1.0",
+                "protons-runtime": "^5.0.0",
+                "uint8arraylist": "^2.4.3",
+                "uint8arrays": "^4.0.6"
+            }
+        },
+        "node_modules/ipns/node_modules/@libp2p/logger": {
+            "version": "3.0.3",
+            "resolved": "https://registry.npmjs.org/@libp2p/logger/-/logger-3.0.3.tgz",
+            "integrity": "sha512-85ioPX10QN4ZOZeurAZe5sQeRUCkIBT2DikKRbE/AIWKauIKHvvIrN4CSdCdzLw29XNA+xxNO2FVkf51HGgCeQ==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "@multiformats/multiaddr": "^12.1.5",
+                "debug": "^4.3.4",
+                "interface-datastore": "^8.2.0",
+                "multiformats": "^12.0.1"
+            }
+        },
+        "node_modules/ipns/node_modules/@libp2p/peer-id": {
+            "version": "3.0.3",
+            "resolved": "https://registry.npmjs.org/@libp2p/peer-id/-/peer-id-3.0.3.tgz",
+            "integrity": "sha512-IPVeywoC40bDd3ohtAIzpN8AOkMmD3U0BjdrFz/5ZbNP1+4n2gDIAwVzkAbF/t1iYYS4CX1TWfHuMqaMvd8l1A==",
+            "dependencies": {
+                "@libp2p/interface": "^0.1.3",
+                "multiformats": "^12.0.1",
+                "uint8arrays": "^4.0.6"
             }
         },
         "node_modules/is-arguments": {
