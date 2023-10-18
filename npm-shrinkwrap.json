@@ -26,7 +26,7 @@
                 "blockstore-idb": "^1.1.1",
                 "datastore-core": "^9.2.0",
                 "datastore-idb": "^2.1.2",
-                "helia": "^2.0.3",
+                "helia": "^2.0.3-43932a5",
                 "ipfs-http-client": "^60.0.1",
                 "ipns": "^7.0.1",
                 "multiformats": "^12.0.1",
@@ -10404,14 +10404,14 @@
             "integrity": "sha512-0cMsjjIC8I+D3M44pOQdsy0OHXGLVz6Z0beRuufhKa0KfaD2wGwAev6jILzXsd3/vpnNQJmWyZtIILqM1N+n5A=="
         },
         "node_modules/helia": {
-            "version": "2.0.3",
-            "resolved": "https://registry.npmjs.org/helia/-/helia-2.0.3.tgz",
-            "integrity": "sha512-8Uze/U48R9p3013+oh5Eg29RwkzRXpCHDYyKxf7yU1S5GGnVguaWrmEHYJ2pKMMYMCgNasmCvfouurKIQvM+cg==",
+            "version": "2.0.3-43932a5",
+            "resolved": "https://registry.npmjs.org/helia/-/helia-2.0.3-43932a5.tgz",
+            "integrity": "sha512-B6f1+fOlKh4UW1OGuAvT447lCI2KJn8oq8jYsD2ADinQMPBa1e352Pvt6RVZ6RJiBQGqEVCl7h4EIqgQMjrLCw==",
             "dependencies": {
                 "@chainsafe/libp2p-gossipsub": "^10.0.0",
                 "@chainsafe/libp2p-noise": "^13.0.0",
                 "@chainsafe/libp2p-yamux": "^5.0.0",
-                "@helia/interface": "^2.0.0",
+                "@helia/interface": "2.0.0-43932a5",
                 "@ipld/dag-cbor": "^9.0.0",
                 "@ipld/dag-json": "^10.0.1",
                 "@ipld/dag-pb": "^4.0.3",
@@ -10426,6 +10426,7 @@
                 "@libp2p/webrtc": "^3.1.3",
                 "@libp2p/websockets": "^7.0.2",
                 "@libp2p/webtransport": "^3.0.3",
+                "any-signal": "^4.1.1",
                 "blockstore-core": "^4.0.0",
                 "cborg": "^4.0.1",
                 "datastore-core": "^9.0.0",
@@ -10448,9 +10449,9 @@
             }
         },
         "node_modules/helia/node_modules/@helia/interface": {
-            "version": "2.0.0",
-            "resolved": "https://registry.npmjs.org/@helia/interface/-/interface-2.0.0.tgz",
-            "integrity": "sha512-LW8iRyits8/Tyi6KkZy6I8VydJZvdmeI5kxLanbLNgcCKrgE9bgrlUjR1cQXV5N+CDV8Rn9FRp6I7tYEYnTC0Q==",
+            "version": "2.0.0-43932a5",
+            "resolved": "https://registry.npmjs.org/@helia/interface/-/interface-2.0.0-43932a5.tgz",
+            "integrity": "sha512-P17jg5QVBHqsn6ySg49txURjtGS1xG2MeTrhaRwt9SuQKmkj258CSGsgt/p6L2bXYKEPVa2aKSG27cQ2N+oLHw==",
             "dependencies": {
                 "@libp2p/interface": "^0.1.1",
                 "interface-blockstore": "^5.0.0",

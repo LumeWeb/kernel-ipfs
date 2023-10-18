@@ -83,6 +83,7 @@ async function handlePresentKey() {
 
   await blockstore.open();
   await datastore.open();
+  // @ts-ignore
   ipfs = await createHelia({
     blockstore,
     // @ts-ignore
