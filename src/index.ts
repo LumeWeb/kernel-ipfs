@@ -236,9 +236,22 @@ async function handleCat(aq: ActiveQuery) {
   aq.respond();
 }
 
+function toDNSPrefix(cid: CID) {
+  const cidb32 = cid.toV1().toString(bases.base32);
+  if (cidb32.length <= 63) {
+    return cidb32;
+  }
+  const cidb36 = cid.toV1().toString(bases.base36);
+  if (cidb36.length <= 63) {
+    return cidb36;
+  }
+  throw new Error("CID incompatible with DNS label length limit of 63");
+}
+
 async function handleIpnsResolve(aq: ActiveQuery) {
   await ready();
 
+  /*
   await activeIpfsPeersDefer.promise;
 
   if (ipfs.libp2p.getPeers().length === 0) {
@@ -246,16 +259,18 @@ async function handleIpnsResolve(aq: ActiveQuery) {
   }
 
   await activeIpfsPeersDefer.promise;
+*/
 
   if (!aq.callerInput || !("cid" in aq.callerInput)) {
     aq.reject("cid required");
     return;
   }
+
   try {
     const cid = getCID(aq.callerInput.cid);
 
     const ret = await fetch(
-      `${IPFS_GATEWAY}/ipns/${cid.toString()}?format=ipns-record`,
+      `${IPFS_GATEWAY}/ipns/${toDNSPrefix(cid)}?format=ipns-record`,
     );
 
     const buf = await ret.arrayBuffer();
