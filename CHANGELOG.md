@@ -1,3 +1,12 @@
+# [0.1.0-develop.23](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.22...v0.1.0-develop.23) (2023-10-18)
+
+
+### Bug Fixes
+
+* add hypercoreTransport back ([483ac62](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/483ac62f96d5a968666661468bd108a7ca57a8bb))
+* need to use dns friendly cids for IPNS ([861a822](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/861a8229d49da93158c2ec1e41747a2d9c14b13f))
+* remove delegated routing again ([2b3b6dd](https://git.lumeweb.com/LumeWeb/kernel-ipfs/commit/2b3b6dd0f396875b030a9dd81cad52cac3ac284f))
+
 # [0.1.0-develop.22](https://git.lumeweb.com/LumeWeb/kernel-ipfs/compare/v0.1.0-develop.21...v0.1.0-develop.22) (2023-10-15)
 
 
